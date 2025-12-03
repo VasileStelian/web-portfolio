@@ -7,7 +7,6 @@ A modern, responsive portfolio website built with Astro and TailwindCSS.
 - Clean, modern design with smooth animations
 - Fully responsive (mobile-friendly)
 - Fast loading with Astro's island architecture
-- SEO optimized with meta tags
 - Accessible HTML structure
 
 ## Tech Stack
