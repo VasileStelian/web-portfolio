@@ -1,0 +1,32 @@
+---
+const techStack = [
+  'React', 'JavaScript (ES6+)', 'TypeScript (learning)', 'Astro', 'TailwindCSS',
+  'Vite', 'Laravel (beginner)', 'PHP', 'HTML5', 'CSS3', 'Git', 'Vercel',
+  'Docker', 'Linux', 'Windows Server', 'PowerShell'
+];
+---
+
+<section id="about" class="py-20 px-4 bg-white">
+  <div class="max-w-4xl mx-auto">
+    <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-12 text-center">
+      About Me
+    </h2>
+    <div class="bg-white rounded-xl p-8 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+      <p class="text-lg text-gray-700 leading-relaxed mb-8">
+        I'm a Front-End Developer who enjoys building clean interfaces, fast websites, and things that actually work.
+        I like simple architectures, good UX, and writing code that's easy to understand later. My background includes
+        servers, automation, Linux, PowerShell, deployment workflows, and security tools.
+      </p>
+      <div>
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">Technologies I work with:</h3>
+        <div class="flex flex-wrap gap-2">
+          {techStack.map((tech) => (
+            <span class="px-4 py-2 bg-blue-50 text-primary rounded-lg text-sm font-medium hover:bg-blue-100 transition-colors duration-300">
+              {tech}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

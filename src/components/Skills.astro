@@ -1,0 +1,39 @@
+---
+const skillCategories = [
+  {
+    title: 'Frontend',
+    skills: ['React', 'JavaScript', 'TailwindCSS', 'Astro', 'Vite', 'TypeScript (learning)', 'Laravel', 'PHP']
+  },
+  {
+    title: 'Tools',
+    skills: ['Git', 'GitHub', 'Vercel', 'Node.js', 'Docker', 'Bash', 'PowerShell']
+  },
+  {
+    title: 'Infrastructure',
+    skills: ['Linux', 'Windows Server', 'Active Directory', 'Networking', 'CI/CD basics']
+  }
+];
+---
+
+<section id="skills" class="py-20 px-4 bg-gradient-to-b from-white to-blue-50">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-12 text-center">
+      Skills
+    </h2>
+    <div class="grid md:grid-cols-3 gap-6">
+      {skillCategories.map((category) => (
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+          <h3 class="text-xl font-bold text-primary mb-4">{category.title}</h3>
+          <ul class="space-y-2">
+            {category.skills.map((skill) => (
+              <li class="text-gray-700 flex items-center">
+                <span class="w-2 h-2 bg-primary rounded-full mr-3"></span>
+                {skill}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
