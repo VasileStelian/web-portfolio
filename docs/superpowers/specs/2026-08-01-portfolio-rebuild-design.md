@@ -20,9 +20,9 @@ every decision in them was made.* Every structural decision below serves that cl
 1. A recruiter scanning for 90 seconds sees: name, role, three production systems, contact.
 2. An engineer reading closely finds a real technical decision and its cost for each
    substantial project.
-3. Every project links to something a stranger can open. Four of six link to a live
-   external system. Two — FINFORGE and the security review — link to an internal case
-   study, for reasons stated in §9.1 and §9.3 rather than for want of effort.
+3. Every project links to something a stranger can open. Four of the five link to a live
+   external system. FINFORGE links to an internal case study until its repository is public
+   (§9.3).
 4. Zero broken links, zero missing decision blocks — enforced mechanically, not by memory.
 
 ---
@@ -160,7 +160,7 @@ guarantee is lost. `brief` exists precisely so the schema never has to relax.
 |---|---|---|---|
 | Apollo Booking | deep | `/work/apollo-booking` | marketing site, booking platform, case study |
 | FINFORGE | deep | `/work/finforge` | case study (repo link added when public) |
-| Security review, inherited Laravel platform | deep | `/work/inherited-platform-security` | case study only, client unnamed — **see §9.1** |
+| sigurantapenet.ro security work | deep | `/work/sigurantapenet` | live site, case study — **see §9.1** |
 | diadrive.ro | brief | — | live site |
 | virtualops.ro | brief | — | live site |
 | Homelab | *folded into FINFORGE case study* | — | — **see §9.2** |
@@ -354,66 +354,64 @@ trains you to ignore the alarm — worse than no check.
 
 ## 9. Risks and open decisions
 
-### 9.1 The security project must not name the client — needs your confirmation
+### 9.1 The security project is named, with one framing change
 
-**New information, 2026-08-01:** production at `sigurantapenet.ro` serves the version
-*before* the remediation. The fixes live on `dev.sigurantapenet.ro`. Both hosts return 200
-and are publicly reachable.
+**Context, established 2026-08-01.** Production at `sigurantapenet.ro` serves the build from
+before the remediation; the fixes live on `dev.sigurantapenet.ro`. Both return 200.
 
-This changes the disclosure question from a matter of taste into a matter of consequence.
+The owner has been informed of every finding — in writing, in a WhatsApp group, and through
+commits with written explanations in their GitLab. The remediation was delivered. A request
+to deploy it was made again two days before this spec was written. Deployment is the owner's
+decision and has not happened.
 
-The draft copy lists, against a named host: unsalted MD5 password storage across the entire
-user base, three password-change endpoints reachable by any authenticated user including
-one that upgrades an account to a paid plan, fourteen-plus unauthenticated API routes
-exposing user enumeration and company data export, SQL injection in a listing query, and
-reset tokens generated with `mt_rand()`.
+That is textbook responsible disclosure followed by vendor inaction. Reporting the work
+publicly under those conditions is legitimate, and the work is the author's to describe. An
+earlier draft of this section recommended anonymising the project; that recommendation is
+withdrawn.
 
-Every one of those is live and unpatched in production right now.
+**Decision:** the project ships named, with the account of what was found and fixed intact.
+Two changes to the draft copy.
 
-Publishing that inventory next to the hostname is a full public disclosure of a working
-attack path against a system with real users who never consented to it. Not a
-post-remediation write-up — an unremediated one. The exposure lands on the platform's users,
-not on the client who declined to deploy, and not on you.
+**Change 1 — reframe the closing paragraph.** The draft ends by naming remaining IDOR and
+mass-assignment risks in a module owned by another engineer. Everything else in the copy
+reads as remediated work, past tense; that sentence alone advertises a live, unfixed,
+specific vulnerability class against a named host. It is also the weakest sentence
+rhetorically — it describes something not done. Replace the vulnerability classes with the
+professional behaviour, which is the actual point:
 
-There is also a second problem, independent of ethics: **the live site is not your work.**
-Linking `sigurantapenet.ro` as evidence points a reader at the codebase you did not fix. It
-proves nothing about you. The link fails at its stated job.
+> "Where I found issues in a module owned by another engineer, I documented them with
+> reproduction steps and handed them over rather than patching someone else's code unasked."
 
-**Decision:** the project ships anonymised. Title: *Security review of an inherited Laravel
-platform*. No hostname, no link to either environment. Tier stays `deep`; the sole link is
-the internal case study, exactly as with FINFORGE.
+**Change 2 — add the disclosure trail.** One line, placed at the end of the project:
 
-**Why:** it removes the disclosure entirely while costing almost nothing. The valuable
-content — the transparent-rehash password migration, its reasoning, and its honest
-trade-off about dormant accounts — survives intact and is what a reader actually judges you
-on. The hostname was never the persuasive part.
+> "Reported to the owner with commits and written explanations. Remediation is delivered and
+> awaiting deployment on their side."
 
-**Trade-offs:** an unnamed project is weaker evidence than a named one, and this is the one
-project with no verifiable external artifact. Accepted: an unverifiable claim is a smaller
-cost than a live disclosure.
+**Why change 2 matters more than it looks:** it proves the work exists and is documented,
+it signals to a security-literate reader that disclosure discipline was followed, and it
+places responsibility for non-deployment where it belongs. A bare list of findings invites a
+reader to wonder about the author's judgment. The same list plus a disclosure trail reads as
+someone who did the job correctly and was ignored — which is what happened.
 
-**When this breaks down:** if an interviewer asks which platform it was. That is fine —
-naming it privately, in conversation, to one person under an NDA-shaped expectation is a
-different act from publishing it to search engines. Say so; the restraint reads well.
+**Trade-offs:** naming a live host alongside a findings list still gives a hostile reader a
+target and a category, even in past tense. Accepted, on the grounds that disclosure was made
+through documented channels and the vendor declined to act. The cost is not zero and is
+recorded here rather than argued away.
+
+**When this breaks down:** if the owner deploys the fixes, change 1 can be reverted and the
+full account restored — the constraint disappears with the exposure. If the platform is
+breached, the documented disclosure trail in their GitLab and WhatsApp is what separates the
+author from the incident.
 
 **Alternatives considered**
 
-1. *Name the client, describe findings only by category, drop the specifics* — halves the
-   exposure but does not remove it. "This named live site had authentication and injection
-   flaws" still points an attacker at a target worth ten minutes.
-2. *Name it after the client deploys the fixes* — the best outcome, and the copy can be
-   revised the day it happens. Rejected as a blocker because the deployment is not in your
-   control and has no date.
-3. *Name it with written permission from the owner* — their call rather than yours, which
-   resolves the ethics. Does not resolve that production is still vulnerable, so the
-   disclosure risk to end users remains.
-
-**Separate from the portfolio, and more urgent than it:** your fixes are sitting on a dev
-host while production runs the vulnerable build. If that platform is breached, you want a
-dated written record that you reported the findings and delivered the remediation. Send the
-client a summary in writing — findings, that the fix is deployed to dev, that production is
-unchanged, and what you recommend. That protects the users first and you second. It is also
-the only version of this story where naming the platform later becomes clean.
+1. *Anonymise the client entirely* — removes the residual exposure. Rejected: it also erases
+   authorship of unpaid work, which is the author's principal objection and a fair one.
+2. *Publish verbatim, including the remaining-risks sentence* — maximum completeness.
+   Available on request; the only reason it is not the default is that the sentence adds
+   live specificity while describing work that was not done.
+3. *Wait for deployment before publishing* — cleanest, but gated on a decision outside the
+   author's control with no date attached.
 
 ### 9.2 Homelab has no public link
 
