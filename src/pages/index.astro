@@ -6,6 +6,7 @@ import ProjectCard from '../components/ProjectCard.astro';
 import RoleCard from '../components/RoleCard.astro';
 import ContactLinks from '../components/ContactLinks.astro';
 import { PERSON, SOCIAL, CV_PATH } from '../config/site';
+import { CV_EDUCATION } from '../config/cv';
 
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
 const roles = (await getCollection('experience')).sort((a, b) => a.data.order - b.data.order);
@@ -80,6 +81,18 @@ const heroLinks = [
   <section class="pt-16" aria-labelledby="experience">
     <SectionHeader title="Experience" id="experience" />
     {roles.map((role) => <RoleCard role={role} />)}
+  </section>
+
+  <section class="pt-16" aria-labelledby="education">
+    <SectionHeader title="Education" id="education" />
+    <ul class="flex list-none flex-col gap-4 p-0">
+      {CV_EDUCATION.map((row) => (
+        <li class="achievement">
+          <span class="achievement__label">{row.label}</span>
+          <p class="achievement__text">{row.text}</p>
+        </li>
+      ))}
+    </ul>
   </section>
 
   <section class="pt-16" aria-labelledby="contact">
