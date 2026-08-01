@@ -41,7 +41,7 @@ every decision in them was made.* Every structural decision below serves that cl
 
 | Layer | Choice |
 |---|---|
-| Framework | Astro 5, `output: 'static'` |
+| Framework | Astro 7, `output: 'static'` |
 | Styling | Tailwind 4 via `@tailwindcss/vite`, CSS-first `@theme` |
 | Content | Astro Content Layer, glob loader, Zod schemas |
 | Fonts | IBM Plex Serif / Sans + JetBrains Mono, self-hosted woff2 |
@@ -49,9 +49,9 @@ every decision in them was made.* Every structural decision below serves that cl
 | CI | GitHub Actions |
 | Host | Vercel, static |
 
-**Decision:** Astro 5 + Tailwind 4 rather than keeping Astro 4 + Tailwind 3.
+**Decision:** Astro 7 + Tailwind 4 rather than keeping Astro 4 + Tailwind 3.
 
-**Why:** This is a rebuild, not maintenance. Astro 5's Content Layer is the mechanism
+**Why:** This is a rebuild, not maintenance. Astro 7's Content Layer is the mechanism
 section 4 depends on. Starting on current versions avoids a migration six months out.
 
 **Trade-offs:** Tailwind 4 moves configuration into CSS. That is a different mental model
@@ -469,7 +469,7 @@ Process: run it, present what it found, you decide each change.
 
 | Phase | Content | Gate |
 |---|---|---|
-| 0 | Clean repo, Astro 5 + Tailwind 4, tokens, fonts | `astro build` passes |
+| 0 | Clean repo, Astro 7 + Tailwind 4, tokens, fonts | `astro build` passes |
 | 1 | `content.config.ts`, six content files, Vitest schema tests | schema tests green |
 | 2 | Stitch design system + three screens, review | you approve the direction |
 | 3 | Index page: Hero, About, Projects, Contact | renders, matches direction |
