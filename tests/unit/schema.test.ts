@@ -108,3 +108,20 @@ describe('projectSchema', () => {
     expect(result.success).toBe(false);
   });
 });
+
+import { readdirSync, readFileSync } from 'node:fs';
+
+describe('content files', () => {
+  const dir = 'src/content/projects';
+
+  it('has exactly five project files', () => {
+    expect(readdirSync(dir).filter((f) => f.endsWith('.md'))).toHaveLength(5);
+  });
+
+  it('gives every project a unique order', () => {
+    const orders = readdirSync(dir)
+      .filter((f) => f.endsWith('.md'))
+      .map((f) => Number(readFileSync(`${dir}/${f}`, 'utf8').match(/^order:\s*(\d+)$/m)![1]));
+    expect(new Set(orders).size).toBe(orders.length);
+  });
+});
