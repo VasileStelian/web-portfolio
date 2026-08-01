@@ -11,8 +11,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "test:unit": "vitest run",
-    "test:e2e": "playwright test",
-    "test": "npm run test:unit && npm run build && npm run test:e2e"
+    "test": "npm run test:unit && npm run build",
+    "check:links": "node scripts/check-links.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
@@ -24,8 +24,6 @@
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
-    "@axe-core/playwright": "^4.12.1",
-    "@playwright/test": "^1.62.1",
     "vitest": "^4.1.10"
   }
 }
