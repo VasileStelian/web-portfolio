@@ -1,0 +1,21 @@
+---
+interface Props {
+  variant: 'decision' | 'tradeoff';
+  label?: string;
+}
+
+const { variant, label } = Astro.props;
+
+// The default labels are the phrasing from the source draft. They carry the
+// voice of the page and should not be reworded without the owner's say-so.
+const DEFAULT_LABELS = {
+  decision: 'The decision I would point to',
+  tradeoff: 'Trade-off',
+} as const;
+
+const heading = label ?? DEFAULT_LABELS[variant];
+---
+<aside class:list={['annotation', `annotation--${variant}`]} aria-label={heading}>
+  <p class="annotation__label">{heading}</p>
+  <div class="annotation__body"><slot /></div>
+</aside>

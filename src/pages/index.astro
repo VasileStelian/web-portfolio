@@ -1,7 +1,38 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { PERSON } from '../config/site';
+import Annotation from '../components/Annotation.astro';
+import StackList from '../components/StackList.astro';
+import LinkList from '../components/LinkList.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import type { ProjectLink } from '../schemas/project';
+
+// Temporary: proves the four Task 6 components compile and render together.
+// A later task replaces this page with the real projects listing.
+const stack = ['React 19', 'TypeScript', 'Vite', 'Fastify', 'SQLite', 'Drizzle', 'Docker'];
+const links: ProjectLink[] = [
+  { label: 'Source (registru)', href: 'https://github.com/VasileStelian/registru', kind: 'repo' },
+  { label: 'Case study', href: '/work/finforge', kind: 'case-study' },
+];
 ---
 <BaseLayout title={PERSON.name} description={PERSON.role}>
   <h1 class="font-display text-3xl font-semibold">{PERSON.name}</h1>
+
+  <SectionHeader index="02" title="FINFORGE" id="finforge" />
+
+  <Annotation variant="decision">
+    The financial logic — surplus, recurring projection, goal allocation — lives in
+    plain modules with no framework or storage access, and persistence sits behind a
+    single storage interface. The app shipped on localStorage and later moved to a
+    real backend. That change touched the adapter and one hook, not the pages.
+  </Annotation>
+
+  <Annotation variant="tradeoff">
+    Version-per-save is coarse. It rejects edits that would not actually have
+    conflicted. For two users that is invisible; at scale it would need finer
+    granularity.
+  </Annotation>
+
+  <StackList items={stack} />
+  <LinkList links={links} />
 </BaseLayout>

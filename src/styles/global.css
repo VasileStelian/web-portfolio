@@ -1,4 +1,10 @@
-@import "tailwindcss";
+/* Tailwind 4's automatic content detection otherwise scans every
+   non-gitignored text file in the repo, including project docs (e.g. the
+   plan under docs/superpowers/), and emits utilities for class names that
+   appear only in prose there. Restricting the detection root to `src` via
+   `source(...)` is an explicit allow-list, which is more robust than trying
+   to exclude every non-source path that might contain a stray class name. */
+@import "tailwindcss" source("../../src");
 
 @import "@fontsource/ibm-plex-serif/latin-ext-600.css";
 @import "@fontsource/ibm-plex-serif/latin-600.css";
@@ -67,4 +73,30 @@
     outline: 2px solid var(--accent);
     outline-offset: 3px;
   }
+}
+
+@layer components {
+  .annotation {
+    border-left: 2px solid var(--accent-muted);
+    background-color: var(--surface-tradeoff);
+    padding: 1rem 1.25rem;
+    margin-block: 1.25rem;
+  }
+  .annotation--decision {
+    border-left-color: var(--accent);
+    background-color: var(--surface-decision);
+  }
+  .annotation__label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent-muted);
+    margin-bottom: 0.5rem;
+  }
+  .annotation--decision .annotation__label { color: var(--accent); }
+  .annotation__body { font-size: 0.9375rem; line-height: 1.7; }
+  .annotation__body > * + * { margin-top: 0.75rem; }
+  .annotation--decision .annotation__body { color: var(--ink); }
+  .annotation--tradeoff .annotation__body { color: var(--ink-muted); }
 }
