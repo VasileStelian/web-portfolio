@@ -1,8 +1,7 @@
 ---
-import '../styles/global.css';
+import BaseLayout from '../layouts/BaseLayout.astro';
 import { PERSON } from '../config/site';
 ---
-<html lang="en">
-  <head><meta charset="utf-8" /><title>{PERSON.name}</title></head>
-  <body class="bg-white text-black"><h1 class="text-3xl font-bold">{PERSON.name}</h1></body>
-</html>
+<BaseLayout title={PERSON.name} description={PERSON.role}>
+  <h1 class="font-display text-3xl font-semibold">{PERSON.name}</h1>
+</BaseLayout>

@@ -1,1 +1,70 @@
 @import "tailwindcss";
+
+@import "@fontsource/ibm-plex-serif/latin-ext-600.css";
+@import "@fontsource/ibm-plex-serif/latin-600.css";
+@import "@fontsource/ibm-plex-sans/latin-ext-400.css";
+@import "@fontsource/ibm-plex-sans/latin-400.css";
+@import "@fontsource/ibm-plex-sans/latin-ext-600.css";
+@import "@fontsource/ibm-plex-sans/latin-600.css";
+@import "@fontsource/jetbrains-mono/latin-ext-400.css";
+@import "@fontsource/jetbrains-mono/latin-400.css";
+
+/* Theme is set on <html data-theme="..."> by the inline script in BaseLayout. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+:root {
+  --paper: #faf9f5;
+  --ink: #1a1a16;
+  --ink-muted: #5c5c52;
+  --rule: #dddace;
+  --accent: #8c4a3f;
+  --accent-muted: #6b6b5e;
+  --surface-decision: #f5efe9;
+  --surface-tradeoff: #f2f2ec;
+}
+
+[data-theme="dark"] {
+  --paper: #131311;
+  --ink: #edebe4;
+  --ink-muted: #9c998e;
+  --rule: #2c2c26;
+  --accent: #c4796a;
+  --accent-muted: #8a8878;
+  --surface-decision: #1c1815;
+  --surface-tradeoff: #191917;
+}
+
+/* `inline` emits var() into the generated utilities, so the custom properties
+   above can flip at runtime without rebuilding the stylesheet. */
+@theme inline {
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-rule: var(--rule);
+  --color-accent: var(--accent);
+  --color-accent-muted: var(--accent-muted);
+  --color-surface-decision: var(--surface-decision);
+  --color-surface-tradeoff: var(--surface-tradeoff);
+
+  --font-display: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+  --font-sans: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+@layer base {
+  html {
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    scroll-behavior: smooth;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+}

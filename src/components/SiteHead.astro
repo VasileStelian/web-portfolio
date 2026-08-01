@@ -1,0 +1,38 @@
+---
+import { SITE_URL, PERSON, CONTACT, SOCIAL } from '../config/site';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical: string;
+  ogType?: 'website' | 'article';
+}
+
+const { title, description, canonical, ogType = 'website' } = Astro.props;
+const canonicalUrl = new URL(canonical, SITE_URL).href;
+
+const personJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: PERSON.name,
+  jobTitle: PERSON.jobTitle,
+  email: `mailto:${CONTACT.email}`,
+  telephone: CONTACT.phone,
+  url: SITE_URL,
+  sameAs: [SOCIAL.github, SOCIAL.linkedin],
+  address: { '@type': 'PostalAddress', addressLocality: 'Iași', addressCountry: 'RO' },
+  knowsAbout: ['PHP', 'Laravel', 'PostgreSQL', 'TypeScript', 'React', 'Docker', 'Linux', 'Application security'],
+};
+---
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalUrl} />
+<meta property="og:type" content={ogType} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalUrl} />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="sitemap" href="/sitemap-index.xml" />
+<script type="application/ld+json" set:html={JSON.stringify(personJsonLd)} />
