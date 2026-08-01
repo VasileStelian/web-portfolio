@@ -1,7 +1,14 @@
 import { describe, it, expect } from 'vitest';
-import { projectSchema } from '../../src/schemas/project';
+import { readdirSync, readFileSync } from 'node:fs';
+import { projectSchema, roleSchema } from '../../src/schemas/project';
 
 const baseLinks = [{ label: 'Live', href: 'https://example.com', kind: 'live' as const }];
+
+const highlights = [
+  { label: 'Concurrency', text: 'Made double-booking structurally impossible via a unique index.' },
+  { label: 'One code path', text: 'Business logic in Action classes, testable without HTTP.' },
+  { label: 'Deploys itself', text: 'Content changes rebuild the marketing site with no manual step.' },
+];
 
 const deep = {
   tier: 'deep' as const,
@@ -12,8 +19,7 @@ const deep = {
   stack: ['PHP 8.3', 'Laravel'],
   summary: 'A complete booking product built from scratch.',
   links: baseLinks,
-  decision: { claim: 'Enforced in the database.', reasoning: 'An application check races.' },
-  tradeoff: 'The error surfaces as a constraint violation.',
+  highlights,
 };
 
 const brief = {
@@ -32,7 +38,7 @@ describe('projectSchema', () => {
     expect(projectSchema.safeParse(deep).success).toBe(true);
   });
 
-  it('accepts a brief project with no decision or tradeoff', () => {
+  it('accepts a brief project carrying no highlights', () => {
     expect(projectSchema.safeParse(brief).success).toBe(true);
   });
 
@@ -42,38 +48,51 @@ describe('projectSchema', () => {
     expect(JSON.stringify(result.error?.issues)).toContain('links');
   });
 
-  it('rejects a deep project missing tradeoff', () => {
-    const { tradeoff, ...withoutTradeoff } = deep;
-    const result = projectSchema.safeParse(withoutTradeoff);
+  it('rejects a deep project with no highlights at all', () => {
+    const { highlights: _dropped, ...withoutHighlights } = deep;
+    const result = projectSchema.safeParse(withoutHighlights);
     expect(result.success).toBe(false);
-    expect(JSON.stringify(result.error?.issues)).toContain('tradeoff');
+    expect(JSON.stringify(result.error?.issues)).toContain('highlights');
   });
 
-  it('rejects a deep project whose decision has empty reasoning', () => {
-    const result = projectSchema.safeParse({
-      ...deep,
-      decision: { claim: 'Enforced in the database.', reasoning: '' },
-    });
+  // A deep project earns its place by having something to say. Two bullets is a
+  // stub; the floor exists so a half-written entry cannot ship as a finished one.
+  it('rejects a deep project with fewer than three highlights', () => {
+    const result = projectSchema.safeParse({ ...deep, highlights: highlights.slice(0, 2) });
     expect(result.success).toBe(false);
-    expect(JSON.stringify(result.error?.issues)).toContain('reasoning');
+    expect(JSON.stringify(result.error?.issues)).toContain('highlights');
   });
 
-  it('rejects a deep project whose decision has an empty claim', () => {
+  it('rejects a highlight with empty text', () => {
     const result = projectSchema.safeParse({
       ...deep,
-      decision: { claim: '', reasoning: 'An application check races.' },
+      highlights: [...highlights.slice(1), { label: 'Concurrency', text: '' }],
     });
     expect(result.success).toBe(false);
-    expect(JSON.stringify(result.error?.issues)).toContain('claim');
+    expect(JSON.stringify(result.error?.issues)).toContain('text');
   });
 
-  it('rejects a deep project with an empty tradeoff', () => {
+  it('rejects a highlight with an empty label', () => {
     const result = projectSchema.safeParse({
       ...deep,
-      tradeoff: '',
+      highlights: [...highlights.slice(1), { label: '', text: 'Something real happened.' }],
     });
     expect(result.success).toBe(false);
-    expect(JSON.stringify(result.error?.issues)).toContain('tradeoff');
+    expect(JSON.stringify(result.error?.issues)).toContain('label');
+  });
+
+  // The label is a mono tag sitting in a fixed-width column. A sentence there wraps
+  // into a ribbon and wrecks the row, so the cap is a layout guarantee, not taste.
+  it('rejects a highlight label longer than 24 characters', () => {
+    const result = projectSchema.safeParse({
+      ...deep,
+      highlights: [
+        ...highlights.slice(1),
+        { label: 'This label is far too long to sit in the column', text: 'Body.' },
+      ],
+    });
+    expect(result.success).toBe(false);
+    expect(JSON.stringify(result.error?.issues)).toContain('label');
   });
 
   it('rejects a live link with a relative href', () => {
@@ -109,19 +128,62 @@ describe('projectSchema', () => {
   });
 });
 
-import { readdirSync, readFileSync } from 'node:fs';
+describe('roleSchema', () => {
+  const role = {
+    order: 1,
+    title: 'IT Systems & Security Engineer',
+    employer: 'Class IT Outsourcing',
+    period: 'June 2024 — present',
+    mode: 'Fully remote',
+    highlights: [{ label: 'Five steps to two', text: 'Cut a five-step routine down to two.' }],
+  };
+
+  it('accepts a complete role', () => {
+    expect(roleSchema.safeParse(role).success).toBe(true);
+  });
+
+  it('accepts a role with no mode', () => {
+    const { mode: _dropped, ...withoutMode } = role;
+    expect(roleSchema.safeParse(withoutMode).success).toBe(true);
+  });
+
+  it('rejects a role with no highlights', () => {
+    const result = roleSchema.safeParse({ ...role, highlights: [] });
+    expect(result.success).toBe(false);
+    expect(JSON.stringify(result.error?.issues)).toContain('highlights');
+  });
+
+  it('rejects a role missing its period', () => {
+    const { period: _dropped, ...withoutPeriod } = role;
+    const result = roleSchema.safeParse(withoutPeriod);
+    expect(result.success).toBe(false);
+    expect(JSON.stringify(result.error?.issues)).toContain('period');
+  });
+});
 
 describe('content files', () => {
-  const dir = 'src/content/projects';
+  const countMd = (dir: string) => readdirSync(dir).filter((f) => f.endsWith('.md'));
+
+  const uniqueOrders = (dir: string) => {
+    const orders = countMd(dir).map((f) =>
+      Number(readFileSync(`${dir}/${f}`, 'utf8').match(/^order:\s*(\d+)$/m)![1]),
+    );
+    return new Set(orders).size === orders.length;
+  };
 
   it('has exactly five project files', () => {
-    expect(readdirSync(dir).filter((f) => f.endsWith('.md'))).toHaveLength(5);
+    expect(countMd('src/content/projects')).toHaveLength(5);
+  });
+
+  it('has three experience files', () => {
+    expect(countMd('src/content/experience')).toHaveLength(3);
   });
 
   it('gives every project a unique order', () => {
-    const orders = readdirSync(dir)
-      .filter((f) => f.endsWith('.md'))
-      .map((f) => Number(readFileSync(`${dir}/${f}`, 'utf8').match(/^order:\s*(\d+)$/m)![1]));
-    expect(new Set(orders).size).toBe(orders.length);
+    expect(uniqueOrders('src/content/projects')).toBe(true);
+  });
+
+  it('gives every role a unique order', () => {
+    expect(uniqueOrders('src/content/experience')).toBe(true);
   });
 });

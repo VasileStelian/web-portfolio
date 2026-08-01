@@ -3,11 +3,12 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHeader from '../components/SectionHeader.astro';
 import ProjectCard from '../components/ProjectCard.astro';
+import RoleCard from '../components/RoleCard.astro';
 import ContactLinks from '../components/ContactLinks.astro';
 import { PERSON, SOCIAL, CV_PATH } from '../config/site';
 
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
-const pad = (n: number) => String(n).padStart(2, '0');
+const roles = (await getCollection('experience')).sort((a, b) => a.data.order - b.data.order);
 
 const heroLinks = [
   { label: 'Projects', href: '#projects' },
@@ -20,20 +21,20 @@ const heroLinks = [
   title={`${PERSON.name} — ${PERSON.role}`}
   description="Full-stack developer, mostly backend. IT Systems & Security Engineer supporting 50 to 60 client organisations, and building software the rest of the time."
 >
-  <section class="py-12">
-    <h1 class="font-display text-4xl font-semibold sm:text-5xl">{PERSON.name}</h1>
-    <p class="mt-3 text-lg text-ink-muted">
-      Full-stack developer, mostly backend. IT engineer by training and by day job.
-    </p>
-    <p class="mt-6 max-w-prose leading-relaxed">
+  <section class="pt-14 pb-4">
+    <h1 class="font-display text-[clamp(2.4rem,7vw,4rem)] leading-[0.98] font-black tracking-[-0.03em] text-balance">
+      Sofron<br />Vasile-Stelian
+    </h1>
+    <p class="mono-label mt-4 text-accent">Full-stack developer · backend focus</p>
+    <p class="mt-6 max-w-[34rem] text-fg-muted">
       I build things that run in production and I can tell you why every decision in them
       was made. Currently an IT Systems &amp; Security Engineer supporting 50 to 60 client
       organisations, and building software the rest of the time.
     </p>
-    <ul class="mt-8 flex flex-wrap gap-x-6 gap-y-2 font-mono text-sm">
+    <ul class="mt-8 flex list-none flex-wrap gap-x-6 gap-y-2 p-0">
       {heroLinks.map((link) => (
         <li>
-          <a href={link.href} class="text-accent underline underline-offset-4 hover:no-underline">
+          <a href={link.href} class="mono-label border-b border-accent pb-0.5 text-fg no-underline hover:text-accent">
             {link.label}
           </a>
         </li>
@@ -41,9 +42,9 @@ const heroLinks = [
     </ul>
   </section>
 
-  <section class="py-12" aria-labelledby="about">
-    <SectionHeader index="01" title="About" id="about" />
-    <div class="max-w-prose space-y-5 leading-relaxed">
+  <section class="pt-16" aria-labelledby="about">
+    <SectionHeader title="About" id="about" />
+    <div class="flex max-w-[44rem] flex-col gap-5 text-fg-muted">
       <p>
         I started in first-line support, answering phones and diagnosing problems from
         nothing but a description. That taught me to ask better questions. Onsite work came
@@ -63,24 +64,27 @@ const heroLinks = [
         down the decisions I make, including the ones where I chose not to build something. I
         would rather find the gap myself than have someone else find it in production.
       </p>
-      <p class="font-mono text-sm text-ink-muted">
+      <p class="font-mono text-xs text-meta">
         Currently: PHP and Laravel, PostgreSQL, TypeScript and React, Docker and Linux.<br />
-        Currently learning: Going deeper on performance and on the parts of the stack I have
+        Currently learning: going deeper on performance and on the parts of the stack I have
         only used, not understood.
       </p>
     </div>
   </section>
 
-  <section class="py-12" aria-labelledby="projects">
-    <SectionHeader index="02" title="Projects" id="projects" />
-    {projects.map((project, i) => (
-      <ProjectCard project={project} index={`${pad(i + 1)} / ${pad(projects.length)}`} />
-    ))}
+  <section class="pt-16" aria-labelledby="projects">
+    <SectionHeader title="Projects" id="projects" />
+    {projects.map((project) => <ProjectCard project={project} />)}
   </section>
 
-  <section class="py-12" aria-labelledby="contact">
-    <SectionHeader index="03" title="Contact" id="contact" />
-    <p class="mb-6 max-w-prose leading-relaxed">
+  <section class="pt-16" aria-labelledby="experience">
+    <SectionHeader title="Experience" id="experience" />
+    {roles.map((role) => <RoleCard role={role} />)}
+  </section>
+
+  <section class="pt-16" aria-labelledby="contact">
+    <SectionHeader title="Contact" id="contact" />
+    <p class="mb-6 max-w-[44rem] text-fg-muted">
       Open to backend and full-stack roles, remote or Iași.
     </p>
     <ContactLinks />

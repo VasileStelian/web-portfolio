@@ -2,7 +2,7 @@
 tier: deep
 order: 1
 title: Apollo Booking
-tagline: Appointment platform
+tagline: Appointment platform, my own product
 status: in production
 stack:
   - PHP 8.3
@@ -14,22 +14,48 @@ stack:
   - Coolify
   - Cloudflare
 summary: >-
-  A complete booking product built from scratch: backend, admin panel, REST API,
-  email and SMS confirmations, deployed and running on a VPS. Two-stack design, a
-  client-agnostic Laravel product plus a per-client marketing site, so the same
-  product can be reskinned rather than rebuilt.
-decision:
-  claim: >-
-    Double-booking is prevented by a partial unique index in PostgreSQL, not by a
-    check in application code.
-  reasoning: >-
-    An application check has a race condition — two requests can both read "slot is
-    free" before either writes. A database constraint is atomic and cannot be
-    bypassed, whatever the application does.
-tradeoff: >-
-  Pushing the rule into the database means the error surfaces as a constraint
-  violation that the application has to translate into something a user
-  understands. Worth it. Correctness first, ergonomics second.
+  An appointment platform built from scratch and running in production: Laravel backend,
+  Filament admin, public REST API, email and SMS confirmations, deployed on a VPS, with a
+  separate marketing site consuming its API.
+highlights:
+  - label: Concurrency
+    text: >-
+      Made double-booking structurally impossible rather than merely unlikely, by moving
+      the rule into a partial unique index in PostgreSQL. An application-level check
+      leaves a race window — two requests can both read "slot is free" before either
+      writes. A database constraint is atomic, so the guarantee holds however many
+      workers run. The cost, accepted deliberately: the error arrives as a constraint
+      violation the application has to translate into something a person understands.
+  - label: Reskin, not fork
+    text: >-
+      Built so that a second client is a marketing skin rather than a branch of the
+      product. The Laravel product is client-agnostic; each client gets its own static
+      site pulling services, specialists and gallery over a read-only JSON API with rate
+      limiting and CORS. Onboarding a client never touches the code that runs the
+      bookings.
+  - label: One code path
+    text: >-
+      Isolated business logic in Action classes so the same code serves both the admin
+      panel and the public API, and can be tested without an HTTP request. 300+ Pest
+      tests run on every change, and each booking rule is verified once instead of twice.
+  - label: Deploys itself
+    text: >-
+      Editing a service in the admin rebuilds the marketing site with no manual step:
+      Laravel observers fire deploy hooks on content change and Cloudflare Pages rebuilds
+      against the API. Publishing used to mean editing in one place and remembering to
+      redeploy the other.
+  - label: Booking integrity
+    text: >-
+      Closed the two paths that matter on a public booking form. A booking cannot be
+      confirmed by an email address the requester does not control, because confirmation
+      requires an emailed OTP; and the first-run setup wizard cannot be claimed by
+      whoever reaches the URL first. Admin accounts sit behind TOTP.
+  - label: Runs on my pager
+    text: >-
+      Dockerised on FrankenPHP and deployed to a Hetzner VPS through Coolify with a queue
+      worker and scheduler, media on Cloudflare R2. When it breaks at 2am it is mine to
+      fix, which is a different relationship with your own code than shipping it over a
+      wall.
 links:
   - label: Marketing site
     href: https://apollobarbershopacademy.ro/

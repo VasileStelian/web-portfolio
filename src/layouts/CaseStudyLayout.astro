@@ -28,18 +28,20 @@ const articleJsonLd = {
 <BaseLayout title={`${title} — ${PERSON.name}`} description={summary} ogType="article">
   <script type="application/ld+json" set:html={JSON.stringify(articleJsonLd)} slot="head" />
 
-  <a href="/#projects" class="font-mono text-xs text-ink-muted hover:text-ink" data-back-link>
+  <a href="/#projects" class="mono-label mt-10 inline-block text-fg-faint hover:text-fg" data-back-link>
     ← All projects
   </a>
 
   <article class="py-8">
-    <h1 class="font-display text-3xl font-semibold sm:text-4xl">{title}</h1>
-    <p class="mt-2 text-sm text-ink-muted">{tagline}</p>
-    <div class="mt-5"><StackList items={stack} /></div>
-    <p class="mt-6 max-w-prose leading-relaxed">{summary}</p>
+    <h1 class="font-display text-[clamp(1.9rem,5vw,2.6rem)] leading-tight font-black tracking-[-0.025em] text-balance">
+      {title}
+    </h1>
+    <p class="mt-2 text-sm text-fg-faint">{tagline}</p>
+    <div class="mt-4"><StackList items={stack} /></div>
+    <p class="mt-6 max-w-[44rem] text-fg-muted">{summary}</p>
 
-    <div class="prose-column mt-10 max-w-prose leading-relaxed"><slot /></div>
+    <div class="prose-column mt-10 max-w-[44rem] text-fg-muted"><slot /></div>
 
-    <div class="mt-12 border-t border-rule pt-6"><LinkList links={links} /></div>
+    <div class="mt-12 border-t border-line pt-6"><LinkList links={links} /></div>
   </article>
 </BaseLayout>

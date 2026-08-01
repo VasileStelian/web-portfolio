@@ -18,6 +18,14 @@ export const linkSchema = z
     },
   );
 
+// An achievement, not a task. `label` is the short mono tag; `text` leads with the
+// outcome and then explains the mechanism. A highlight that only says what was built,
+// with no consequence, is the failure mode this shape exists to discourage.
+export const highlightSchema = z.object({
+  label: z.string().min(1).max(24),
+  text: z.string().min(1),
+});
+
 const shared = {
   order: z.number().int().positive(),
   title: z.string().min(1),
@@ -34,11 +42,7 @@ export const projectSchema = z.discriminatedUnion('tier', [
   z.object({
     tier: z.literal('deep'),
     ...shared,
-    decision: z.object({
-      claim: z.string().min(1),
-      reasoning: z.string().min(1),
-    }),
-    tradeoff: z.string().min(1),
+    highlights: z.array(highlightSchema).min(3),
   }),
   z.object({
     tier: z.literal('brief'),
@@ -46,5 +50,16 @@ export const projectSchema = z.discriminatedUnion('tier', [
   }),
 ]);
 
+export const roleSchema = z.object({
+  order: z.number().int().positive(),
+  title: z.string().min(1),
+  employer: z.string().min(1),
+  period: z.string().min(1),
+  mode: z.string().optional(),
+  highlights: z.array(highlightSchema).min(1),
+});
+
 export type Project = z.infer<typeof projectSchema>;
 export type ProjectLink = z.infer<typeof linkSchema>;
+export type Highlight = z.infer<typeof highlightSchema>;
+export type Role = z.infer<typeof roleSchema>;
