@@ -1,18 +1,105 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Hero from '../components/Hero.astro';
-import About from '../components/About.astro';
-import Skills from '../components/Skills.astro';
-import Projects from '../components/Projects.astro';
-import Contact from '../components/Contact.astro';
-import Footer from '../components/Footer.astro';
----
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import RoleCard from '../components/RoleCard.astro';
+import ContactLinks from '../components/ContactLinks.astro';
+import { PERSON, SOCIAL, CV_PATH } from '../config/site';
+import { CV_EDUCATION } from '../config/cv';
 
-<Layout title="Sofron Vasile Stelian - Front End Developer">
-  <Hero />
-  <About />
-  <Skills />
-  <Projects />
-  <Contact />
-  <Footer />
-</Layout>
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const roles = (await getCollection('experience')).sort((a, b) => a.data.order - b.data.order);
+
+const heroLinks = [
+  { label: 'Projects', href: '#projects' },
+  { label: 'GitHub', href: SOCIAL.github },
+  { label: 'LinkedIn', href: SOCIAL.linkedin },
+  { label: 'CV', href: CV_PATH },
+];
+---
+<BaseLayout
+  title={`${PERSON.name} — ${PERSON.role}`}
+  description="Full-stack developer, mostly backend. IT Systems & Security Engineer supporting 50 to 60 client organisations, and building software the rest of the time."
+>
+  <section class="pt-14 pb-4">
+    <h1 class="font-display text-[clamp(2.4rem,7vw,4rem)] leading-[0.98] font-black tracking-[-0.03em] text-balance">
+      Sofron<br />Vasile-Stelian
+    </h1>
+    <p class="mono-label mt-4 text-accent">Full-stack developer · backend focus</p>
+    <p class="mt-6 max-w-[34rem] text-fg-muted">
+      I build things that run in production and I can tell you why every decision in them
+      was made. Currently an IT Systems &amp; Security Engineer supporting 50 to 60 client
+      organisations, and building software the rest of the time.
+    </p>
+    <ul class="mt-8 flex list-none flex-wrap gap-x-6 gap-y-2 p-0">
+      {heroLinks.map((link) => (
+        <li>
+          <a href={link.href} class="mono-label border-b border-accent pb-0.5 text-fg no-underline hover:text-accent">
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="pt-16" aria-labelledby="about">
+    <SectionHeader title="About" id="about" />
+    <div class="flex max-w-[44rem] flex-col gap-5 text-fg-muted">
+      <p>
+        I started in first-line support, answering phones and diagnosing problems from
+        nothing but a description. That taught me to ask better questions. Onsite work came
+        next, where I finally had access to the systems and logs behind an application, and I
+        started tracing problems to their cause instead of passing them on. That is what
+        pushed me toward building rather than only fixing.
+      </p>
+      <p>
+        Today I work as an IT engineer in a managed services environment, fully remote,
+        across 50 to 60 client estates. The work is escalated incidents, root cause analysis
+        across systems that were never designed to talk to each other, and automation of
+        anything that repeats. It is good training for writing backend code, because you
+        spend your days seeing how software fails in the real world.
+      </p>
+      <p>
+        I build with an eye on failure modes and concurrency, I test end to end, and I write
+        down the decisions I make, including the ones where I chose not to build something. I
+        would rather find the gap myself than have someone else find it in production.
+      </p>
+      <p class="font-mono text-xs text-meta">
+        Currently: PHP and Laravel, PostgreSQL, TypeScript and React, Docker and Linux.<br />
+        Currently learning: going deeper on performance and on the parts of the stack I have
+        only used, not understood.
+      </p>
+    </div>
+  </section>
+
+  <section class="pt-16" aria-labelledby="projects">
+    <SectionHeader title="Projects" id="projects" />
+    {projects.map((project) => <ProjectCard project={project} />)}
+  </section>
+
+  <section class="pt-16" aria-labelledby="experience">
+    <SectionHeader title="Experience" id="experience" />
+    {roles.map((role) => <RoleCard role={role} />)}
+  </section>
+
+  <section class="pt-16" aria-labelledby="education">
+    <SectionHeader title="Education" id="education" />
+    <ul class="flex list-none flex-col gap-4 p-0">
+      {CV_EDUCATION.map((row) => (
+        <li class="achievement">
+          <span class="achievement__label">{row.label}</span>
+          <p class="achievement__text">{row.text}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="pt-16" aria-labelledby="contact">
+    <SectionHeader title="Contact" id="contact" />
+    <p class="mb-6 max-w-[44rem] text-fg-muted">
+      Open to backend and full-stack roles — remote, Iași or Bacău, and open to relocating.
+    </p>
+    <ContactLinks />
+  </section>
+</BaseLayout>

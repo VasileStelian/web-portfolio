@@ -24,3 +24,8 @@ pnpm-debug.log*
 *.swp
 *.swo
 *~
+
+# Local working documents: specs, plans and design notes. Useful on disk,
+# noise in the repository.
+docs/superpowers/
+docs/design/

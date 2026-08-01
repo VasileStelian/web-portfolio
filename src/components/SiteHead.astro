@@ -1,0 +1,45 @@
+---
+import { SITE_URL, PERSON, CONTACT, SOCIAL } from '../config/site';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical: string;
+  ogType?: 'website' | 'article';
+}
+
+const { title, description, canonical, ogType = 'website' } = Astro.props;
+const canonicalUrl = new URL(canonical, SITE_URL).href;
+
+const personJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: PERSON.name,
+  jobTitle: PERSON.jobTitle,
+  email: `mailto:${CONTACT.email}`,
+  telephone: CONTACT.phone,
+  url: SITE_URL,
+  sameAs: [SOCIAL.github, SOCIAL.linkedin],
+  // Where he lives, not where he will work — the contact section carries the second
+  // point, and schema.org has no field that means "open to relocation".
+  homeLocation: {
+    '@type': 'Place',
+    address: { '@type': 'PostalAddress', addressLocality: 'Bacău', addressCountry: 'RO' },
+  },
+  knowsAbout: ['PHP', 'Laravel', 'PostgreSQL', 'TypeScript', 'React', 'Docker', 'Linux', 'Application security'],
+};
+---
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- Without this, native controls and scrollbars stay light when the tokens flip to dark. -->
+<meta name="color-scheme" content="light dark" />
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalUrl} />
+<meta property="og:type" content={ogType} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalUrl} />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="sitemap" href="/sitemap-index.xml" />
+<script type="application/ld+json" set:html={JSON.stringify(personJsonLd)} />

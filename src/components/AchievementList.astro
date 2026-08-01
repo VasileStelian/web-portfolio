@@ -1,0 +1,17 @@
+---
+import type { Highlight } from '../schemas/project';
+
+interface Props {
+  items: readonly Highlight[];
+}
+
+const { items } = Astro.props;
+---
+<ul class="mt-6 flex list-none flex-col gap-4 p-0">
+  {items.map((item) => (
+    <li class="achievement">
+      <span class="achievement__label">{item.label}</span>
+      <p class="achievement__text">{item.text}</p>
+    </li>
+  ))}
+</ul>

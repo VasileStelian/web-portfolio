@@ -1,17 +1,32 @@
 {
   "name": "web-portfolio",
   "type": "module",
-  "version": "1.0.0",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
     "dev": "astro dev",
-    "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test:unit": "vitest run",
+    "test": "npm run test:unit && npm run build",
+    "check:links": "node scripts/check-links.mjs",
+    "check:cv": "node scripts/check-cv.mjs"
   },
   "dependencies": {
-    "astro": "^4.0.0",
-    "@astrojs/tailwind": "^5.0.0",
-    "tailwindcss": "^3.4.0"
+    "@astrojs/sitemap": "^3.7.3",
+    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "@fontsource/ibm-plex-sans": "^5.3.0",
+    "@fontsource/ibm-plex-serif": "^5.3.0",
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "@fontsource/public-sans": "^5.3.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.1.6",
+    "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "vitest": "^4.1.10"
   }
 }

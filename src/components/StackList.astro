@@ -1,0 +1,9 @@
+---
+interface Props { items: readonly string[] }
+const { items } = Astro.props;
+---
+<ul class="flex list-none flex-wrap gap-x-3 gap-y-1 p-0 font-mono text-xs text-meta">
+  {items.map((item, i) => (
+    <li>{i > 0 && <span class="mr-3 text-line" aria-hidden="true">·</span>}{item}</li>
+  ))}
+</ul>

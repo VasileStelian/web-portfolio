@@ -1,0 +1,143 @@
+/* Tailwind 4's automatic content detection otherwise scans every non-gitignored text
+   file in the repo, including project docs (e.g. the plan under docs/superpowers/), and
+   emits utilities for class names that appear only in prose there. Restricting the
+   detection root to `src` via `source(...)` is an explicit allow-list, which is more
+   robust than trying to exclude every non-source path that might contain a stray class
+   name. Note that a bare `@source "..."` only ADDS a path — it does not narrow. */
+@import "tailwindcss" source("../../src");
+
+/* Public Sans carries the display weight; IBM Plex Sans the body; IBM Plex Mono every
+   label. No serif anywhere — a serif display face over a warm ground is the single most
+   recognisable generated-design signature, and this page is meant to read as a person's. */
+@import "@fontsource/public-sans/latin-ext-900.css";
+@import "@fontsource/public-sans/latin-900.css";
+@import "@fontsource/public-sans/latin-ext-700.css";
+@import "@fontsource/public-sans/latin-700.css";
+@import "@fontsource/ibm-plex-sans/latin-ext-400.css";
+@import "@fontsource/ibm-plex-sans/latin-400.css";
+@import "@fontsource/ibm-plex-mono/latin-ext-500.css";
+@import "@fontsource/ibm-plex-mono/latin-500.css";
+
+/* Theme is set on <html data-theme="..."> by the inline script in BaseLayout. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+:root {
+  --bg: #ffffff;
+  --surface: #f9fafb;
+  --fg: #18181b;
+  --fg-muted: #52525b;
+  --fg-faint: #71717a;
+  --line: #e4e4e7;
+  --accent: #b91c1c;
+  --meta: #4b5563;
+}
+
+[data-theme="dark"] {
+  --bg: #09090b;
+  --surface: #131316;
+  --fg: #f4f4f5;
+  --fg-muted: #a1a1aa;
+  --fg-faint: #8b8b93;
+  --line: #27272a;
+  --accent: #f87171;
+  --meta: #9ca3af;
+}
+
+/* `inline` emits var() into the generated utilities, so the custom properties above can
+   flip at runtime without rebuilding the stylesheet. Dropping `inline` bakes the light
+   values into every utility and the dark theme silently stops working. */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-faint: var(--fg-faint);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-meta: var(--meta);
+
+  --font-display: "Public Sans", system-ui, -apple-system, sans-serif;
+  --font-sans: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+@layer base {
+  html {
+    background-color: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    scroll-behavior: smooth;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  /* The mono label vocabulary: every eyebrow, tag, status and metadata run uses it. */
+  .mono-label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  /* An achievement row: mono tag in a fixed column, outcome text beside it. Collapses to
+     stacked on narrow screens so the tag never squeezes the sentence into a ribbon. */
+  .achievement {
+    display: grid;
+    grid-template-columns: 10.5rem 1fr;
+    gap: 0.25rem 1.5rem;
+    align-items: baseline;
+  }
+  .achievement__label {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding-top: 0.3rem;
+  }
+  .achievement__text {
+    color: var(--fg-muted);
+    line-height: 1.65;
+  }
+  @media (max-width: 640px) {
+    .achievement { grid-template-columns: 1fr; gap: 0.2rem; }
+    .achievement__label { padding-top: 0; }
+  }
+
+  .prose-column h2 {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .prose-column p + p { margin-top: 1rem; }
+  .prose-column code {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    background-color: var(--surface);
+    padding: 0.1em 0.35em;
+    border-radius: 2px;
+  }
+  .prose-column pre {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    background-color: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    padding: 1rem;
+    margin-block: 1.5rem;
+    overflow-x: auto;
+  }
+  .prose-column pre code { background: none; padding: 0; }
+}
