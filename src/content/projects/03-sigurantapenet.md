@@ -60,6 +60,11 @@ links:
   - label: Case study
     href: /work/sigurantapenet
     kind: case-study
+shots:
+  - label: The remediated build
+    desktop: /screens/sigurantapenet-desktop.webp
+    mobile: /screens/sigurantapenet-mobile.webp
+    alt: The training platform carrying the security work, running on the staging host
 ---
 
 ## What the review found

@@ -1,0 +1,36 @@
+---
+import type { Shot } from '../schemas/project';
+
+interface Props {
+  shots: readonly Shot[];
+}
+
+const { shots } = Astro.props;
+---
+<div class="mt-7 flex flex-col gap-8">
+  {shots.map((shot) => (
+    <figure class="m-0">
+      <figcaption class="mono-label mb-2 text-fg-faint">{shot.label}</figcaption>
+      <div class="flex items-end gap-3">
+        <img
+          src={shot.desktop}
+          alt={`${shot.alt} — desktop`}
+          width="1440"
+          height="900"
+          loading="lazy"
+          decoding="async"
+          class="min-w-0 flex-1 rounded-sm border border-line"
+        />
+        <img
+          src={shot.mobile}
+          alt={`${shot.alt} — mobile`}
+          width="390"
+          height="844"
+          loading="lazy"
+          decoding="async"
+          class="hidden w-[22%] shrink-0 self-end rounded-sm border border-line sm:block"
+        />
+      </div>
+    </figure>
+  ))}
+</div>

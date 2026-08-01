@@ -17,4 +17,9 @@ links:
   - label: Live site
     href: https://virtualops.ro
     kind: live
+shots:
+  - label: virtualops.ro
+    desktop: /screens/virtualops-desktop.webp
+    mobile: /screens/virtualops-mobile.webp
+    alt: The IT outsourcing brand site, built for search engines and answer engines
 ---

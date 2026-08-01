@@ -26,6 +26,16 @@ export const highlightSchema = z.object({
   text: z.string().min(1),
 });
 
+// A screenshot pair. Both viewports are required together: a desktop-only shot of a
+// booking flow says nothing about whether it works on the phone people actually book
+// from, and that is the question a reader is really asking.
+export const shotSchema = z.object({
+  label: z.string().min(1),
+  desktop: z.string().regex(/^\/screens\/\S+\.webp$/),
+  mobile: z.string().regex(/^\/screens\/\S+\.webp$/),
+  alt: z.string().min(1),
+});
+
 const shared = {
   order: z.number().int().positive(),
   title: z.string().min(1),
@@ -36,6 +46,7 @@ const shared = {
   // Every project links to something a reader can open. Enforced here so that
   // adding a project without evidence fails the build rather than shipping.
   links: z.array(linkSchema).min(1),
+  shots: z.array(shotSchema).optional(),
 };
 
 export const projectSchema = z.discriminatedUnion('tier', [
@@ -62,4 +73,5 @@ export const roleSchema = z.object({
 export type Project = z.infer<typeof projectSchema>;
 export type ProjectLink = z.infer<typeof linkSchema>;
 export type Highlight = z.infer<typeof highlightSchema>;
+export type Shot = z.infer<typeof shotSchema>;
 export type Role = z.infer<typeof roleSchema>;

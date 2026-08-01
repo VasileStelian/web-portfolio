@@ -23,4 +23,9 @@ links:
   - label: Live site
     href: https://diadrive.ro
     kind: live
+shots:
+  - label: diadrive.ro
+    desktop: /screens/diadrive-desktop.webp
+    mobile: /screens/diadrive-mobile.webp
+    alt: The driving school site that ranks first page for its target local keyword
 ---

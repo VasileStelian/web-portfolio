@@ -3,6 +3,7 @@ import type { CollectionEntry } from 'astro:content';
 import AchievementList from './AchievementList.astro';
 import StackList from './StackList.astro';
 import LinkList from './LinkList.astro';
+import ShotPair from './ShotPair.astro';
 
 interface Props {
   project: CollectionEntry<'projects'>;
@@ -24,6 +25,8 @@ const { data } = project;
   <div class="mt-3"><StackList items={data.stack} /></div>
 
   <p class="mt-4 max-w-[44rem] text-fg-muted">{data.summary}</p>
+
+  {data.shots && data.shots.length > 0 && <ShotPair shots={data.shots} />}
 
   {data.tier === 'deep' && <AchievementList items={data.highlights} />}
 

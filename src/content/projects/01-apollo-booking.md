@@ -66,6 +66,15 @@ links:
   - label: Case study
     href: /work/apollo-booking
     kind: case-study
+shots:
+  - label: Booking platform
+    desktop: /screens/apollo-booking-desktop.webp
+    mobile: /screens/apollo-booking-mobile.webp
+    alt: The Apollo booking flow, where a customer picks a specialist, service and slot
+  - label: Marketing site
+    desktop: /screens/apollo-marketing-desktop.webp
+    mobile: /screens/apollo-marketing-mobile.webp
+    alt: The per-client marketing site, built against the product's public API
 ---
 
 ## Two stacks, one product
