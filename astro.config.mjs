@@ -1,7 +1,12 @@
+// astro.config.mjs
 import { defineConfig } from 'astro/config';
-import tailwind from '@astrojs/tailwind';
+import tailwindcss from '@tailwindcss/vite';
+import sitemap from '@astrojs/sitemap';
+import { SITE_URL } from './src/config/site.ts';
 
 export default defineConfig({
-  integrations: [tailwind()],
-  site: 'https://yoursite.com',
+  site: SITE_URL,
+  output: 'static',
+  integrations: [sitemap()],
+  vite: { plugins: [tailwindcss()] },
 });
