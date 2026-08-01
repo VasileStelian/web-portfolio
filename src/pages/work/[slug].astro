@@ -1,0 +1,28 @@
+---
+import { getCollection, render } from 'astro:content';
+import CaseStudyLayout from '../../layouts/CaseStudyLayout.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects
+    .filter((project) => project.data.tier === 'deep')
+    .map((project) => ({
+      params: { slug: project.id.replace(/^\d+-/, '') },
+      props: { project },
+    }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+const slug = project.id.replace(/^\d+-/, '');
+---
+<CaseStudyLayout
+  title={project.data.title}
+  tagline={project.data.tagline}
+  summary={project.data.summary}
+  stack={project.data.stack}
+  links={project.data.links}
+  slug={slug}
+>
+  <Content />
+</CaseStudyLayout>

@@ -1,0 +1,45 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import StackList from '../components/StackList.astro';
+import LinkList from '../components/LinkList.astro';
+import { SITE_URL, PERSON } from '../config/site';
+import type { ProjectLink } from '../schemas/project';
+
+interface Props {
+  title: string;
+  tagline: string;
+  summary: string;
+  stack: readonly string[];
+  links: readonly ProjectLink[];
+  slug: string;
+}
+
+const { title, tagline, summary, stack, links, slug } = Astro.props;
+
+const articleJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'TechArticle',
+  headline: title,
+  description: summary,
+  author: { '@type': 'Person', name: PERSON.name, url: SITE_URL },
+  url: new URL(`/work/${slug}`, SITE_URL).href,
+};
+---
+<BaseLayout title={`${title} — ${PERSON.name}`} description={summary} ogType="article">
+  <script type="application/ld+json" set:html={JSON.stringify(articleJsonLd)} slot="head" />
+
+  <a href="/#projects" class="font-mono text-xs text-ink-muted hover:text-ink" data-back-link>
+    ← All projects
+  </a>
+
+  <article class="py-8">
+    <h1 class="font-display text-3xl font-semibold sm:text-4xl">{title}</h1>
+    <p class="mt-2 text-sm text-ink-muted">{tagline}</p>
+    <div class="mt-5"><StackList items={stack} /></div>
+    <p class="mt-6 max-w-prose leading-relaxed">{summary}</p>
+
+    <div class="prose-column mt-10 max-w-prose leading-relaxed"><slot /></div>
+
+    <div class="mt-12 border-t border-rule pt-6"><LinkList links={links} /></div>
+  </article>
+</BaseLayout>
