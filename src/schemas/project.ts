@@ -1,7 +1,7 @@
 import { z } from 'astro/zod';
 
 const ABSOLUTE = /^https:\/\/\S+$/;
-const ROOT_RELATIVE = /^\/\S*$/;
+const ROOT_RELATIVE = /^\/(?!\/)\S*$/;
 
 export const linkSchema = z
   .object({

@@ -58,6 +58,24 @@ describe('projectSchema', () => {
     expect(JSON.stringify(result.error?.issues)).toContain('reasoning');
   });
 
+  it('rejects a deep project whose decision has an empty claim', () => {
+    const result = projectSchema.safeParse({
+      ...deep,
+      decision: { claim: '', reasoning: 'An application check races.' },
+    });
+    expect(result.success).toBe(false);
+    expect(JSON.stringify(result.error?.issues)).toContain('claim');
+  });
+
+  it('rejects a deep project with an empty tradeoff', () => {
+    const result = projectSchema.safeParse({
+      ...deep,
+      tradeoff: '',
+    });
+    expect(result.success).toBe(false);
+    expect(JSON.stringify(result.error?.issues)).toContain('tradeoff');
+  });
+
   it('rejects a live link with a relative href', () => {
     const result = projectSchema.safeParse({
       ...deep,
@@ -80,5 +98,13 @@ describe('projectSchema', () => {
       links: [{ label: 'Case study', href: '/work/apollo-booking', kind: 'case-study' }],
     });
     expect(result.success).toBe(true);
+  });
+
+  it('rejects a case-study link with a protocol-relative href', () => {
+    const result = projectSchema.safeParse({
+      ...deep,
+      links: [{ label: 'Case study', href: '//evil.com', kind: 'case-study' }],
+    });
+    expect(result.success).toBe(false);
   });
 });
