@@ -594,8 +594,9 @@ write deployment code.
 
 ## Repository
 
-The repository is being prepared for public release. Until then this page is the
-record; the GitHub link is added here the day it goes public.
+The source is public at `VasileStelian/registru` — the repository kept the working name it
+was started under. Everything described above is in there: the storage interface, the
+version-per-save transaction, and the SSE notification path.
 ```
 
 - [ ] **Step 4: Write `src/content/projects/03-sigurantapenet.md`**
@@ -2195,24 +2196,6 @@ Expected: all green. Copy edits must not break the schema or the E2E assertions.
 - [ ] **Step 5: Open the tracked backlog issues**
 
 ```bash
-gh issue create --title "[FEATURE] Make FINFORGE repository public" \
-  --label "feature,claude-ready,P2" \
-  --body "## Summary
-
-FINFORGE is the only project with no external artifact. Its portfolio entry links to the internal case study instead of code.
-
-## Acceptance Criteria
-
-- [ ] Secrets scrubbed from working tree and history
-- [ ] README written
-- [ ] Repository made public at https://github.com/VasileStelian/finforge
-- [ ] A \`kind: repo\` link added to \`src/content/projects/02-finforge.md\`
-- [ ] \`npm run check:links\` exits 0
-
-## Priority
-
-P2: Medium"
-
 gh issue create --title "[FEATURE] Restore full security disclosure once sigurantapenet.ro deploys the fixes" \
   --label "feature,security,claude-ready,P3" \
   --body "## Summary

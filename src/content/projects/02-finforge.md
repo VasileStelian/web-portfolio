@@ -29,6 +29,9 @@ tradeoff: >-
   conflicted. For two users that is invisible; at scale it would need finer
   granularity.
 links:
+  - label: Source (registru)
+    href: https://github.com/VasileStelian/registru
+    kind: repo
   - label: Case study
     href: /work/finforge
     kind: case-study
@@ -56,5 +59,6 @@ write deployment code.
 
 ## Repository
 
-The repository is being prepared for public release. Until then this page is the
-record; the GitHub link is added here the day it goes public.
+The source is public at `VasileStelian/registru` — the repository kept the working name it
+was started under. Everything described above is in there: the storage interface, the
+version-per-save transaction, and the SSE notification path.

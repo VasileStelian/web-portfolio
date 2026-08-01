@@ -20,9 +20,8 @@ every decision in them was made.* Every structural decision below serves that cl
 1. A recruiter scanning for 90 seconds sees: name, role, three production systems, contact.
 2. An engineer reading closely finds a real technical decision and its cost for each
    substantial project.
-3. Every project links to something a stranger can open. Four of the five link to a live
-   external system. FINFORGE links to an internal case study until its repository is public
-   (§9.3).
+3. Every project links to something a stranger can open. All five projects link to a live
+   external system (§9.3).
 4. Zero broken links, zero missing decision blocks — enforced mechanically, not by memory.
 
 ---
@@ -423,13 +422,16 @@ which is work), fold Homelab into the FINFORGE case study as deployment context,
 claim there — "my deployment target is hardware I own and can break" — and it stops being a
 seventh unlinked entry.
 
-### 9.3 FINFORGE repository is private
+### 9.3 FINFORGE repository is public
 
-Confirmed 404. `/work/finforge` with real screenshots is the primary link until the repo is
-public. A GitHub issue tracks making it public.
+The repository went public on 2026-08-01, at `VasileStelian/registru`. It kept the working
+name it was started under rather than being renamed to match the portfolio. The portfolio
+keeps the project name FINFORGE; the link label names the repo explicitly instead
+("Source (registru)").
 
-**Trade-off:** a case study you wrote is weaker evidence than code a stranger can read. An
-asterisk remains until the repo ships.
+**Trade-off:** closed. The asterisk this section tracked — a case study standing in for code
+a stranger could read — no longer applies. `/work/finforge` remains as a secondary link, but
+the repository is now the primary evidence.
 
 ### 9.4 diadrive.ro tier
 
