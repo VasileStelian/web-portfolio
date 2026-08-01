@@ -20,7 +20,12 @@ const personJsonLd = {
   telephone: CONTACT.phone,
   url: SITE_URL,
   sameAs: [SOCIAL.github, SOCIAL.linkedin],
-  address: { '@type': 'PostalAddress', addressLocality: 'Iași', addressCountry: 'RO' },
+  // Where he lives, not where he will work — the contact section carries the second
+  // point, and schema.org has no field that means "open to relocation".
+  homeLocation: {
+    '@type': 'Place',
+    address: { '@type': 'PostalAddress', addressLocality: 'Bacău', addressCountry: 'RO' },
+  },
   knowsAbout: ['PHP', 'Laravel', 'PostgreSQL', 'TypeScript', 'React', 'Docker', 'Linux', 'Application security'],
 };
 ---
