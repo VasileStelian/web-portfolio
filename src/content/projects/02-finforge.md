@@ -50,6 +50,29 @@ links:
   - label: Case study
     href: /work/finforge
     kind: case-study
+shots:
+  - label: Monthly summary
+    desktop: /screens/finforge-desktop.webp
+    mobile: /screens/finforge-mobile.webp
+    alt: >-
+      The monthly summary: balance after expenses, income, outgoings, goal progress and
+      upcoming due dates, with a personal / shared / combined switch in the sidebar
+  - label: Planning
+    desktop: /screens/finforge-planificare-desktop.webp
+    alt: >-
+      The planning view, where recurring and one-off income and expenses are projected
+      forward into a month before it starts
+  - label: Goals
+    desktop: /screens/finforge-obiective-desktop.webp
+    alt: Savings goals, each tracking allocated amount against target
+  - label: Subscriptions
+    mobile: /screens/finforge-abonamente-mobile.webp
+    alt: Recurring subscriptions with their monthly cost and next charge date
+  - label: Shared tasks
+    mobile: /screens/finforge-work-mobile.webp
+    alt: >-
+      The shared task board, where household jobs move between to-do, doing and done and
+      each item is marked as personal or shared between both accounts
 ---
 
 ## Two people, two phones

@@ -26,15 +26,23 @@ export const highlightSchema = z.object({
   text: z.string().min(1),
 });
 
-// A screenshot pair. Both viewports are required together: a desktop-only shot of a
-// booking flow says nothing about whether it works on the phone people actually book
-// from, and that is the question a reader is really asking.
-export const shotSchema = z.object({
-  label: z.string().min(1),
-  desktop: z.string().regex(/^\/screens\/\S+\.webp$/),
-  mobile: z.string().regex(/^\/screens\/\S+\.webp$/),
-  alt: z.string().min(1),
-});
+const SCREEN_PATH = /^\/screens\/\S+\.webp$/;
+
+// A screenshot of one view, in one or both viewports. At least one is required — a shot
+// entry with neither is a caption pointing at nothing. Both are preferred where the view
+// exists on both, because a desktop-only image of something people use on a phone dodges
+// the question a reader is actually asking.
+export const shotSchema = z
+  .object({
+    label: z.string().min(1),
+    desktop: z.string().regex(SCREEN_PATH).optional(),
+    mobile: z.string().regex(SCREEN_PATH).optional(),
+    alt: z.string().min(1),
+  })
+  .refine((shot) => Boolean(shot.desktop || shot.mobile), {
+    message: 'a shot needs at least one of desktop or mobile',
+    path: ['desktop'],
+  });
 
 const shared = {
   order: z.number().int().positive(),

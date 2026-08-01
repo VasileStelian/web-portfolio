@@ -23,24 +23,33 @@ const count = shots.length;
       <figure class="m-0">
         <figcaption class="mono-label mb-2 text-fg-faint">{shot.label}</figcaption>
         <div class="flex items-end gap-3">
-          <img
-            src={shot.desktop}
-            alt={`${shot.alt} — desktop`}
-            width="1440"
-            height="900"
-            loading="lazy"
-            decoding="async"
-            class="min-w-0 flex-1 rounded-sm border border-line"
-          />
-          <img
-            src={shot.mobile}
-            alt={`${shot.alt} — mobile`}
-            width="390"
-            height="844"
-            loading="lazy"
-            decoding="async"
-            class="hidden w-[22%] shrink-0 self-end rounded-sm border border-line sm:block"
-          />
+          {shot.desktop && (
+            <img
+              src={shot.desktop}
+              alt={shot.mobile ? `${shot.alt} — desktop` : shot.alt}
+              width="1440"
+              height="900"
+              loading="lazy"
+              decoding="async"
+              class="min-w-0 flex-1 rounded-sm border border-line"
+            />
+          )}
+          {shot.mobile && (
+            <img
+              src={shot.mobile}
+              alt={shot.desktop ? `${shot.alt} — mobile` : shot.alt}
+              width="390"
+              height="844"
+              loading="lazy"
+              decoding="async"
+              class:list={[
+                'shrink-0 self-end rounded-sm border border-line',
+                /* Beside a desktop shot it is a thumbnail; on its own it stands at a
+                   readable size rather than a sliver floating in white space. */
+                shot.desktop ? 'hidden w-[22%] sm:block' : 'w-[min(15rem,60%)]',
+              ]}
+            />
+          )}
         </div>
       </figure>
     ))}
