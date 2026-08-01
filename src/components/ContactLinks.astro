@@ -1,0 +1,19 @@
+---
+import { CONTACT, SOCIAL } from '../config/site';
+
+const links = [
+  { label: CONTACT.email, href: `mailto:${CONTACT.email}` },
+  { label: CONTACT.phoneDisplay, href: `tel:${CONTACT.phone}` },
+  { label: 'GitHub', href: SOCIAL.github },
+  { label: 'LinkedIn', href: SOCIAL.linkedin },
+];
+---
+<ul class="flex flex-wrap gap-x-6 gap-y-2 font-mono text-sm">
+  {links.map((link) => (
+    <li>
+      <a href={link.href} class="text-accent underline underline-offset-4 hover:no-underline">
+        {link.label}
+      </a>
+    </li>
+  ))}
+</ul>

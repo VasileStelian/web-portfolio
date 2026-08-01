@@ -1,0 +1,40 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Annotation from './Annotation.astro';
+import StackList from './StackList.astro';
+import LinkList from './LinkList.astro';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  index: string;
+}
+
+const { project, index } = Astro.props;
+const { data } = project;
+---
+<article class="border-t border-rule py-12 first:border-t-0">
+  <div class="mb-1 flex items-baseline justify-between gap-4">
+    <h3 class="font-display text-2xl font-semibold">{data.title}</h3>
+    <span class="font-mono text-xs text-ink-muted">{index}</span>
+  </div>
+
+  <p class="mb-4 text-sm text-ink-muted">{data.tagline} · {data.status}</p>
+
+  <StackList items={data.stack} />
+
+  <p class="mt-5 leading-relaxed">{data.summary}</p>
+
+  {data.tier === 'deep' && (
+    <>
+      <Annotation variant="decision">
+        <p>{data.decision.claim}</p>
+        <p>{data.decision.reasoning}</p>
+      </Annotation>
+      <Annotation variant="tradeoff">
+        <p>{data.tradeoff}</p>
+      </Annotation>
+    </>
+  )}
+
+  <div class="mt-6"><LinkList links={data.links} /></div>
+</article>
