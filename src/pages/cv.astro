@@ -1,0 +1,255 @@
+---
+// The CV, rendered from the same collections as the site so a highlight edited once
+// changes both. Printed to PDF by scripts/build-cv.mjs, which is what makes the
+// downloadable version machine-readable: real text, embedded fonts, parseable by the
+// applicant tracking systems that ignore an image-only PDF entirely.
+import { getCollection } from 'astro:content';
+import '../styles/global.css';
+import { PERSON, CONTACT, SOCIAL, SITE_URL } from '../config/site';
+import { CV_HEADLINE, CV_LOCATION, CV_SUMMARY, CV_SKILLS, CV_EDUCATION } from '../config/cv';
+
+const projects = (await getCollection('projects'))
+  .filter((p) => p.data.tier === 'deep')
+  .sort((a, b) => a.data.order - b.data.order);
+
+const roles = (await getCollection('experience')).sort((a, b) => a.data.order - b.data.order);
+
+const hostOf = (url: string) => new URL(url).host.replace(/^www\./, '');
+---
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{PERSON.name} — CV</title>
+    <meta name="description" content={CV_HEADLINE} />
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={new URL('/cv', SITE_URL).href} />
+  </head>
+  <body class="cv-page">
+    <header class="cv-head">
+      <div>
+        <h1>{PERSON.name}</h1>
+        <p class="cv-headline">{CV_HEADLINE}</p>
+      </div>
+      <address class="cv-contact">
+        {CV_LOCATION}<br />
+        {CONTACT.phoneDisplay} · <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a><br />
+        <a href={SOCIAL.linkedin}>{hostOf(SOCIAL.linkedin)}/in/vasilestelian</a> ·
+        <a href={SOCIAL.github}>{hostOf(SOCIAL.github)}/VasileStelian</a>
+      </address>
+    </header>
+
+    <section>
+      <h2>Summary</h2>
+      <p class="cv-summary">{CV_SUMMARY}</p>
+    </section>
+
+    <section>
+      <h2>Technical skills</h2>
+      <dl class="cv-rows">
+        {CV_SKILLS.map((row) => (
+          <>
+            <dt>{row.label}</dt>
+            <dd>{row.text}</dd>
+          </>
+        ))}
+      </dl>
+    </section>
+
+    <section>
+      <h2>Projects</h2>
+      {projects.map((project) => (
+        <article class="cv-entry">
+          <div class="cv-entry-head">
+            <h3>{project.data.title}</h3>
+            <span class="cv-meta">{project.data.status}</span>
+          </div>
+          <p class="cv-sub">{project.data.tagline}</p>
+          <p class="cv-stack">{project.data.stack.join(' · ')}</p>
+          {project.data.tier === 'deep' && (
+            <dl class="cv-rows">
+              {project.data.highlights.map((h) => (
+                <>
+                  <dt>{h.label}</dt>
+                  <dd>{h.text}</dd>
+                </>
+              ))}
+            </dl>
+          )}
+          <p class="cv-links">
+            {project.data.links
+              .filter((l) => l.kind !== 'case-study')
+              .map((l, i) => (
+                <>{i > 0 && ' · '}<a href={l.href}>{l.href.replace(/^https:\/\//, '').replace(/\/$/, '')}</a></>
+              ))}
+          </p>
+        </article>
+      ))}
+    </section>
+
+    <section>
+      <h2>Professional experience</h2>
+      {roles.map((role) => (
+        <article class="cv-entry">
+          <div class="cv-entry-head">
+            <h3>{role.data.title}</h3>
+            <span class="cv-meta">{role.data.period}</span>
+          </div>
+          <p class="cv-sub">{role.data.employer}{role.data.mode ? ` · ${role.data.mode}` : ''}</p>
+          <dl class="cv-rows">
+            {role.data.highlights.map((h) => (
+              <>
+                <dt>{h.label}</dt>
+                <dd>{h.text}</dd>
+              </>
+            ))}
+          </dl>
+        </article>
+      ))}
+    </section>
+
+    <section>
+      <h2>Education & languages</h2>
+      <dl class="cv-rows">
+        {CV_EDUCATION.map((row) => (
+          <>
+            <dt>{row.label}</dt>
+            <dd>{row.text}</dd>
+          </>
+        ))}
+      </dl>
+    </section>
+  </body>
+</html>
+
+<style is:global>
+  /* Print geometry first: this page exists to become a PDF. Screen viewing is the
+     secondary use, so the layout is sized in millimetres against an A4 page. */
+  @page {
+    size: A4;
+    margin: 11mm 12mm;
+  }
+
+  .cv-page {
+    background: #ffffff;
+    color: #18181b;
+    font-family: var(--font-sans);
+    font-size: 8.5pt;
+    line-height: 1.34;
+    max-width: 190mm;
+    margin: 0 auto;
+    padding: 6mm 6mm 8mm;
+  }
+
+  .cv-page a { color: inherit; text-decoration: none; border-bottom: 0.5pt solid #c9c9cf; }
+
+  .cv-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 9mm;
+    border-bottom: 1pt solid #18181b;
+    padding-bottom: 3mm;
+  }
+  .cv-head h1 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 17pt;
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+  .cv-headline {
+    font-family: var(--font-mono);
+    font-size: 8pt;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #b91c1c;
+    margin: 1.5mm 0 0;
+  }
+  .cv-contact {
+    font-style: normal;
+    font-family: var(--font-mono);
+    font-size: 7.6pt;
+    line-height: 1.6;
+    text-align: right;
+    color: #52525b;
+    white-space: nowrap;
+  }
+
+  .cv-page section { margin-top: 4mm; }
+  .cv-page h2 {
+    font-family: var(--font-mono);
+    font-size: 7.6pt;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #71717a;
+    border-bottom: 0.5pt solid #d4d4d8;
+    padding-bottom: 1mm;
+    margin: 0 0 2.2mm;
+  }
+
+  .cv-summary { margin: 0; max-width: 175mm; }
+
+  /* The label/value grid used for skills, project highlights, role achievements and
+     education — one shape for every list on the page. */
+  .cv-rows {
+    display: grid;
+    grid-template-columns: 27mm 1fr;
+    gap: 1.3mm 4mm;
+    margin: 0;
+  }
+  .cv-rows dt {
+    font-family: var(--font-mono);
+    font-size: 7.4pt;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: #b91c1c;
+    padding-top: 0.4mm;
+  }
+  .cv-rows dd { margin: 0; }
+  .cv-rows dt, .cv-rows dd { break-inside: avoid; }
+
+  .cv-entry { margin-top: 3.2mm; break-inside: auto; }
+  .cv-entry:first-of-type { margin-top: 0; }
+  .cv-entry-head {
+    break-after: avoid;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 6mm;
+  }
+  .cv-entry h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 9.6pt;
+    margin: 0;
+  }
+  .cv-meta {
+    font-family: var(--font-mono);
+    font-size: 7.4pt;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #71717a;
+    white-space: nowrap;
+  }
+  .cv-sub { font-style: italic; color: #52525b; margin: 0.6mm 0 0; }
+  .cv-stack {
+    font-family: var(--font-mono);
+    font-size: 7.6pt;
+    color: #4b5563;
+    margin: 0.9mm 0 1.6mm;
+  }
+  .cv-links {
+    font-family: var(--font-mono);
+    font-size: 7.4pt;
+    color: #4b5563;
+    margin: 1.4mm 0 0;
+  }
+
+  @media print {
+    .cv-page { padding: 0; max-width: none; }
+    .cv-page section { break-inside: auto; }
+    .cv-page h2 { break-after: avoid; }
+  }
+</style>

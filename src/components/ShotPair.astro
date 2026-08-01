@@ -6,31 +6,77 @@ interface Props {
 }
 
 const { shots } = Astro.props;
+const count = shots.length;
 ---
-<div class="mt-7 flex flex-col gap-8">
-  {shots.map((shot) => (
-    <figure class="m-0">
-      <figcaption class="mono-label mb-2 text-fg-faint">{shot.label}</figcaption>
-      <div class="flex items-end gap-3">
-        <img
-          src={shot.desktop}
-          alt={`${shot.alt} — desktop`}
-          width="1440"
-          height="900"
-          loading="lazy"
-          decoding="async"
-          class="min-w-0 flex-1 rounded-sm border border-line"
-        />
-        <img
-          src={shot.mobile}
-          alt={`${shot.alt} — mobile`}
-          width="390"
-          height="844"
-          loading="lazy"
-          decoding="async"
-          class="hidden w-[22%] shrink-0 self-end rounded-sm border border-line sm:block"
-        />
-      </div>
-    </figure>
-  ))}
-</div>
+{/* Native <details> rather than a scripted accordion: it costs no JavaScript, it is
+    keyboard-operable and screen-reader-announced without any work, and the browser's
+    find-in-page can still reach the captions inside. */}
+<details class="shots mt-6">
+  <summary class="shots__summary mono-label">
+    <span class="shots__marker" aria-hidden="true"></span>
+    Screenshots
+    <span class="shots__count">{count === 1 ? '1 view' : `${count} views`}</span>
+  </summary>
+
+  <div class="mt-5 flex flex-col gap-8">
+    {shots.map((shot) => (
+      <figure class="m-0">
+        <figcaption class="mono-label mb-2 text-fg-faint">{shot.label}</figcaption>
+        <div class="flex items-end gap-3">
+          <img
+            src={shot.desktop}
+            alt={`${shot.alt} — desktop`}
+            width="1440"
+            height="900"
+            loading="lazy"
+            decoding="async"
+            class="min-w-0 flex-1 rounded-sm border border-line"
+          />
+          <img
+            src={shot.mobile}
+            alt={`${shot.alt} — mobile`}
+            width="390"
+            height="844"
+            loading="lazy"
+            decoding="async"
+            class="hidden w-[22%] shrink-0 self-end rounded-sm border border-line sm:block"
+          />
+        </div>
+      </figure>
+    ))}
+  </div>
+</details>
+
+<style>
+  .shots__summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    cursor: pointer;
+    list-style: none;
+    color: var(--fg-faint);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 0.3rem;
+  }
+  .shots__summary::-webkit-details-marker { display: none; }
+  .shots__summary:hover { color: var(--fg); border-color: var(--fg-muted); }
+  .shots__summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  /* A triangle that rotates on open — the only moving thing on the page, and it is
+     the one place where movement carries meaning. */
+  .shots__marker {
+    width: 0;
+    height: 0;
+    border-left: 5px solid currentColor;
+    border-top: 3.5px solid transparent;
+    border-bottom: 3.5px solid transparent;
+    transition: transform 120ms ease;
+  }
+  .shots[open] .shots__marker { transform: rotate(90deg); }
+
+  .shots__count { color: var(--meta); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .shots__marker { transition: none; }
+  }
+</style>
