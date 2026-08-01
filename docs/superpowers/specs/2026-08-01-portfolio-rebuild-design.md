@@ -424,7 +424,7 @@ seventh unlinked entry.
 
 ### 9.3 FINFORGE repository is public
 
-The repository went public on 2026-08-01, at `VasileStelian/registru`. It kept the working
+The repository went public on 2026-08-01 at `VasileStelian/registru`. It kept the working
 name it was started under rather than being renamed to match the portfolio. The portfolio
 keeps the project name FINFORGE; the link label names the repo explicitly instead
 ("Source (registru)").

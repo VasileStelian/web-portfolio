@@ -567,6 +567,9 @@ tradeoff: >-
   conflicted. For two users that is invisible; at scale it would need finer
   granularity.
 links:
+  - label: Source (registru)
+    href: https://github.com/VasileStelian/registru
+    kind: repo
   - label: Case study
     href: /work/finforge
     kind: case-study
@@ -2240,7 +2243,7 @@ git commit -m "docs(portfolio): apply reviewed copy edits"
 
 ## Self-Review
 
-**Spec coverage.** §3 stack → Task 1. §4 content model → Tasks 2–3. §5 routes → Tasks 7, 8, 9. §6 components → Tasks 5–7. §7 visual design → Tasks 4–6. §8 testing: 8.1 build-time → Task 3 Step 7; 8.2 unit → Task 2; 8.3 E2E → Task 10; 8.4 link check → Task 11; 8.5 performance budget → Task 7 Step 5 and Task 12 Step 5. §9.1 security copy → Task 3 Step 4, Global Constraints, Task 13 backlog. §9.2 Homelab → folded into Task 3 Step 3. §9.3 FINFORGE → Task 3 Step 3, Task 13 issue. §9.4 diadrive → Task 3 Step 5, Task 13 issue. §9.5 CV compression → Task 9 Steps 1–2. §9.6 `SITE_URL` → Task 1 Step 8, Task 12 Step 3. §10 humanizer → Task 13.
+**Spec coverage.** §3 stack → Task 1. §4 content model → Tasks 2–3. §5 routes → Tasks 7, 8, 9. §6 components → Tasks 5–7. §7 visual design → Tasks 4–6. §8 testing: 8.1 build-time → Task 3 Step 7; 8.2 unit → Task 2; 8.3 E2E → Task 10; 8.4 link check → Task 11; 8.5 performance budget → Task 7 Step 5 and Task 12 Step 5. §9.1 security copy → Task 3 Step 4, Global Constraints, Task 13 backlog. §9.2 Homelab → folded into Task 3 Step 3. §9.3 FINFORGE → Task 3 Step 3. §9.4 diadrive → Task 3 Step 5, Task 13 issue. §9.5 CV compression → Task 9 Steps 1–2. §9.6 `SITE_URL` → Task 1 Step 8, Task 12 Step 3. §10 humanizer → Task 13.
 
 **Known gap, deliberate:** the spec's OG image asset (`public/og/*.png`) has no task. `SiteHead.astro` emits `og:title`, `og:description` and `og:url` but no `og:image`, so social previews will show no artwork. Generating OG images depends on the Task 4 visual direction and is a separate piece of work; it is not blocked on anything here. Task 13 should add a fourth issue for it if the owner wants it before launch. Screenshot capture for the Apollo and FINFORGE case studies is in the same position — the `public/screens/` directory is declared in the file structure but no task populates it, because the captures have to be taken by the owner from systems only they can access.
 
