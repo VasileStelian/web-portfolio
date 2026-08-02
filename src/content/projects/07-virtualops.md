@@ -1,6 +1,6 @@
 ---
 tier: brief
-order: 6
+order: 7
 title: virtualops.ro
 tagline: Website for an IT outsourcing brand
 status: shipped

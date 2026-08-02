@@ -1,6 +1,6 @@
 ---
 tier: brief
-order: 5
+order: 6
 title: diadrive.ro
 tagline: Website, SEO and paid acquisition for a driving school
 status: shipped

@@ -1,6 +1,6 @@
 ---
 tier: deep
-order: 1
+order: 3
 title: Apollo Booking
 tagline: Appointment platform, my own product
 status: in production

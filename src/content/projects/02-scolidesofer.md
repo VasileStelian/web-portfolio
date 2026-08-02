@@ -1,6 +1,6 @@
 ---
 tier: deep
-order: 4
+order: 2
 title: ScoliDeSofer.ro
 tagline: Public directory of 3,000+ driving schools, and the acquisition engine for a B2B SaaS
 status: in production
