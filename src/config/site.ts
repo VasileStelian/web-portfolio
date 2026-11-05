@@ -5,8 +5,8 @@ export const SITE_URL = 'https://web-portfolio-inky-xi.vercel.app';
 
 export const PERSON = {
   name: 'Sofron Vasile-Stelian',
-  role: 'Full-stack developer, mostly backend',
-  jobTitle: 'IT Systems & Security Engineer',
+  role: 'Full-stack developer',
+  jobTitle: 'Software Developer',
   location: 'Bacău, Romania',
   openToRelocation: true,
 } as const;

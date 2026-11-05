@@ -15,6 +15,28 @@ const entries = (dir: string) =>
     })
     .sort((a, b) => a.order - b.order);
 
+describe('the whole site', () => {
+  const sources = (readdirSync('src', { recursive: true }) as string[])
+    .filter((file) => /\.(astro|md|ts)$/.test(file))
+    .map((file) => ({ file, text: readFileSync(`src/${file}`, 'utf8') }));
+
+  it.each([
+    ['the old job title', /security engineer/i],
+    ['the old positioning', /mostly backend|backend focus/i],
+    ['the client-estate count', /50 to 60/],
+    ['a deliberately excluded project', /fanvora|SOC documentation/i],
+    ['technology he has not used', /jquery|nosql/i],
+  ])('never mentions %s', (_name, pattern) => {
+    expect(sources.filter(({ text }) => pattern.test(text)).map(({ file }) => file)).toEqual([]);
+  });
+
+  it('introduces him by the current role in the hero and the metadata', () => {
+    const index = readFileSync('src/pages/index.astro', 'utf8');
+    expect(index.match(/OptimumDesk/g)?.length ?? 0).toBeGreaterThanOrEqual(2);
+    expect(readFileSync('src/config/site.ts', 'utf8')).toMatch(/jobTitle: 'Software Developer'/);
+  });
+});
+
 describe('projects match the CV', () => {
   const projects = entries('src/content/projects');
   const avariiacum = projects.find((p) => p.file.endsWith('-avariiacum.md'));
