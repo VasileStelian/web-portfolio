@@ -28,6 +28,16 @@ describe('projects match the CV', () => {
     expect(avariiacum!.raw).toMatch(/- Next\.js 16$/m);
   });
 
+  // Employer work, presented as development on a codebase someone else started. The CV
+  // keeps two security outcomes from it and drops the vulnerability list; so does the site.
+  it('presents sigurantapenet.ro as development on an inherited codebase', () => {
+    const siguranta = projects.find((p) => p.file.endsWith('-sigurantapenet.md'))!;
+    expect(siguranta.title).not.toMatch(/security/i);
+    expect(siguranta.title).toMatch(/inherited/i);
+    expect(siguranta.raw).toMatch(/262 commits/);
+    expect(siguranta.raw).not.toMatch(/SQL injection|mt_rand|CSPRNG|enumeration/i);
+  });
+
   // No usage figure exists for it, so none may be implied.
   it('makes no usage or traffic claim for avariiacum.ro', () => {
     expect(avariiacum!.raw).not.toMatch(/\busers\b|visitors|traffic|downloads|\d[\d,]* (people|reports)/i);

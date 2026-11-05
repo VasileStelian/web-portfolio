@@ -9,7 +9,7 @@ export const LASTMOD: Record<string, string> = {
   '/work/scolidesofer/': '2026-08-02',
   '/work/apollo-booking/': '2026-08-01',
   '/work/finforge/': '2026-08-01',
-  '/work/sigurantapenet/': '2026-08-01',
+  '/work/sigurantapenet/': '2026-11-05',
 };
 
 export function withLastmod<T extends { url: string; lastmod?: string }>(item: T): T {

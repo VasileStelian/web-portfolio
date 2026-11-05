@@ -1,18 +1,51 @@
 ---
 tier: deep
 order: 6
-title: Security work on a Laravel training platform
-tagline: sigurantapenet.ro, inherited codebase
-status: shipped
+title: Development on an inherited Laravel platform
+tagline: sigurantapenet.ro, employer work at Startech Team
+status: in production
 stack:
   - Laravel
   - MySQL
   - Blade
-  - Tailwind
+  - Bootstrap
+  - Tailwind v4
+  - JavaScript
 summary: >-
-  I joined an existing application and reviewed it before adding to it. That review
-  turned into most of the work.
+  From March to September 2026 I took over development of sigurantapenet.ro, an online
+  safety training platform that other people had built in Laravel over three years. It
+  stayed in production the whole time: 262 commits across the back end and the front
+  end, as part of my job at Startech Team.
 highlights:
+  - label: Changed while running
+    text: >-
+      262 commits between March and September 2026 on an application that never went
+      offline for them. It is the one project here that I did not start, which means
+      every change had to fit code written before I arrived and leave the parts I did not
+      touch working exactly as they were.
+  - label: 37 pages migrated
+    text: >-
+      Introduced Tailwind v4 into a three-year-old Bootstrap/SCSS codebase behind an
+      explicit opt-in allow-list, migrating 37 pages incrementally with no regressions to
+      anything untouched. No freeze, no big-bang rewrite, and no page left broken while
+      the migration was half done.
+  - label: Rebuilt on a system
+    text: >-
+      Gave the front end shared CSS primitives, reusable Blade components and layouts
+      built for their purpose, then rebuilt the homepage, the sign-in flow and the whole
+      learning area on top of them.
+  - label: ADA Simulator
+    text: >-
+      Built the ADA Simulator in JavaScript. It turns a guide from DNSC, Romania's
+      national cyber security directorate, into an interactive exercise in spotting
+      deepfakes, fake influencers generated with AI and bots, and explains the dead
+      internet theory. A password strength checker sits alongside it.
+  - label: Free to paid closed
+    text: >-
+      Closed a path from a free account to a paid business plan. Three password-change
+      endpoints were reachable by any authenticated user and unscoped to the caller, so
+      one of them could be used to reach handlers belonging to other account tiers,
+      including the one that upgrades a plan.
   - label: Passwords migrated
     text: >-
       Moved the entire user base off unsalted MD5 without a single forced reset or a
@@ -22,37 +55,6 @@ highlights:
       in its place — users noticed nothing. The cost, documented rather than hidden:
       dormant accounts never sign in, so they never migrate, and the legacy verification
       path stays alive until a planned cutoff.
-  - label: Free to paid closed
-    text: >-
-      Closed a path from a free account to a paid business plan. Three password-change
-      endpoints were reachable by any authenticated user and unscoped to the caller, so
-      one of them could be used to reach handlers belonging to other account tiers,
-      including the one that upgrades a plan.
-  - label: Closed by default
-    text: >-
-      Flipped the default from open to closed across 14+ unauthenticated routes that
-      exposed user enumeration and company data export. Rather than adding a check to
-      each controller, enforcement moved into role-based middleware, so a route added a
-      year from now is protected unless someone deliberately opts out. The failure mode
-      changes from "forgot to add a check" to "explicitly removed one".
-  - label: Vulnerabilities fixed
-    text: >-
-      A SQL injection in the video listing query, missing validation on two rating
-      endpoints, and password reset tokens generated with mt_rand() instead of a CSPRNG —
-      predictable enough to take over an account without ever knowing the password. All
-      of it surfaced in a review I started myself, on code I inherited rather than wrote.
-  - label: 37 pages migrated
-    text: >-
-      Introduced Tailwind v4 into a three-year-old Bootstrap/SCSS codebase behind an
-      explicit opt-in allow-list, migrating 37 pages incrementally with no regressions to
-      anything untouched. No freeze, no big-bang rewrite, and no page left broken while
-      the migration was half done.
-  - label: Handed over, not patched
-    text: >-
-      Reported every finding to the owner with commits and written explanations, and
-      stopped at the ownership boundary: issues in a module owned by another engineer
-      were documented with reproduction steps and handed over rather than patched
-      unasked. Remediation is delivered and awaiting deployment on their side.
 links:
   - label: Live site
     href: https://sigurantapenet.ro
@@ -61,19 +63,30 @@ links:
     href: /work/sigurantapenet
     kind: case-study
 shots:
-  - label: The remediated build
+  - label: Rebuilt homepage
     desktop: /screens/sigurantapenet-desktop.webp
     mobile: /screens/sigurantapenet-mobile.webp
-    alt: The training platform carrying the security work, running on the staging host
+    alt: The training platform's homepage, rebuilt on the shared components and layouts
 ---
 
-## What the review found
+## Working in code I did not start
 
-Passwords stored as unsalted MD5 across the whole user base. Three password-change
-endpoints reachable by any authenticated user, including one that upgraded an account
-to a paid plan. Fourteen-plus API routes with no authentication at all, exposing user
-enumeration and company data export. A SQL injection in a listing query. Reset tokens
-generated with `mt_rand()`.
+The platform had been running for three years when I took it over: Laravel, MySQL,
+Blade, and a front end in Bootstrap and SCSS. It stayed in production while I worked on
+it, so no change could need a maintenance window, and the modules I was not working on
+had to behave exactly as they did before.
+
+## Tailwind without a big bang
+
+Rewriting the front end in one go would have meant either freezing the product or
+keeping a long-lived branch that drifted further from production every week. Instead,
+Tailwind v4 went in next to Bootstrap behind an explicit opt-in allow-list, so the new
+utility classes could not collide with Bootstrap's own class names. Pages moved over one
+at a time. 37 of them were migrated with no regressions in the modules I did not touch,
+and each step could be reversed on its own.
+
+Shared CSS primitives, reusable Blade components and purpose-built layouts came next,
+and the homepage, the sign-in flow and the whole learning area were rebuilt on them.
 
 ## The password migration
 
@@ -85,14 +98,3 @@ The honest cost is that dormant accounts never sign in, so they never migrate. T
 legacy verification path has to stay alive for them, which is a second code path in
 the most security-sensitive function in the application. That is a planned cutoff, not
 a finished job, and it was documented that way.
-
-## Working in someone else's module
-
-Where I found issues in a module owned by another engineer, I documented them with
-reproduction steps and handed them over rather than patching someone else's code
-unasked.
-
-## Status
-
-Reported to the owner with commits and written explanations. Remediation is delivered
-and awaiting deployment on their side.
