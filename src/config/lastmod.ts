@@ -3,7 +3,7 @@
 // changes what it shows (text, facts, title, description), to the day that commit reaches
 // production, in Romanian time. Layout, style and refactor commits date nothing.
 export const LASTMOD: Record<string, string> = {
-  '/': '2026-08-02',
+  '/': '2026-11-05',
   '/work/school-logistics/': '2026-08-02',
   '/work/scolidesofer/': '2026-08-02',
   '/work/apollo-booking/': '2026-08-01',

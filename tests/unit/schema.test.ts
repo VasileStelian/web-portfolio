@@ -188,8 +188,8 @@ describe('content files', () => {
     }
   });
 
-  it('has three experience files', () => {
-    expect(countMd('src/content/experience')).toHaveLength(3);
+  it('has four experience files', () => {
+    expect(countMd('src/content/experience')).toHaveLength(4);
   });
 
   it('gives every project a unique order', () => {
