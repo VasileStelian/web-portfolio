@@ -15,6 +15,25 @@ const entries = (dir: string) =>
     })
     .sort((a, b) => a.order - b.order);
 
+describe('projects match the CV', () => {
+  const projects = entries('src/content/projects');
+  const avariiacum = projects.find((p) => p.file.endsWith('-avariiacum.md'));
+
+  it('shows avariiacum.ro near the top, as a case study with the live site and source', () => {
+    expect(avariiacum).toBeDefined();
+    expect(avariiacum!.order).toBeLessThanOrEqual(2);
+    expect(avariiacum!.raw).toMatch(/^tier: deep$/m);
+    expect(avariiacum!.raw).toMatch(/href: https:\/\/avariiacum\.ro$/m);
+    expect(avariiacum!.raw).toMatch(/href: https:\/\/github\.com\/VasileStelian\/avariiacum$/m);
+    expect(avariiacum!.raw).toMatch(/- Next\.js 16$/m);
+  });
+
+  // No usage figure exists for it, so none may be implied.
+  it('makes no usage or traffic claim for avariiacum.ro', () => {
+    expect(avariiacum!.raw).not.toMatch(/\busers\b|visitors|traffic|downloads|\d[\d,]* (people|reports)/i);
+  });
+});
+
 describe('experience matches the CV', () => {
   const roles = entries('src/content/experience');
 

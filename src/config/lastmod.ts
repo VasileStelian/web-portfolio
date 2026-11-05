@@ -5,6 +5,7 @@
 export const LASTMOD: Record<string, string> = {
   '/': '2026-11-05',
   '/work/school-logistics/': '2026-08-02',
+  '/work/avariiacum/': '2026-11-05',
   '/work/scolidesofer/': '2026-08-02',
   '/work/apollo-booking/': '2026-08-01',
   '/work/finforge/': '2026-08-01',

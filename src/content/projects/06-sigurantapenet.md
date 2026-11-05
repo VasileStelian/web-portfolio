@@ -1,6 +1,6 @@
 ---
 tier: deep
-order: 5
+order: 6
 title: Security work on a Laravel training platform
 tagline: sigurantapenet.ro, inherited codebase
 status: shipped
