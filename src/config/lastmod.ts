@@ -3,13 +3,13 @@
 // changes what it shows (text, facts, title, description), to the day that commit reaches
 // production, in Romanian time. Layout, style and refactor commits date nothing.
 export const LASTMOD: Record<string, string> = {
-  '/': '2026-11-05',
-  '/work/school-logistics/': '2026-11-05',
-  '/work/avariiacum/': '2026-11-05',
-  '/work/scolidesofer/': '2026-11-05',
-  '/work/apollo-booking/': '2026-11-05',
-  '/work/finforge/': '2026-11-05',
-  '/work/sigurantapenet/': '2026-11-05',
+  '/': '2026-11-06',
+  '/work/school-logistics/': '2026-11-06',
+  '/work/avariiacum/': '2026-11-06',
+  '/work/scolidesofer/': '2026-11-06',
+  '/work/apollo-booking/': '2026-11-06',
+  '/work/finforge/': '2026-11-06',
+  '/work/sigurantapenet/': '2026-11-06',
 };
 
 export function withLastmod<T extends { url: string; lastmod?: string }>(item: T): T {
