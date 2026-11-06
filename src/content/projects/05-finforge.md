@@ -1,6 +1,6 @@
 ---
 tier: deep
-order: 4
+order: 5
 title: FINFORGE
 tagline: Self-hosted household budgeting app
 status: in daily use

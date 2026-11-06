@@ -1,5 +1,5 @@
 ---
-order: 2
+order: 3
 title: Onsite IT Support Technician
 employer: BSlash
 period: September 2023 — February 2024
